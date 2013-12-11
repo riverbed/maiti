@@ -1,0 +1,362 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		12D1DB7C168AE38D008D866A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D1DB7B168AE38D008D866A /* Foundation.framework */; };
+		12D1DB81168AE38D008D866A /* PerformanceLibrary.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 12D1DB80168AE38D008D866A /* PerformanceLibrary.h */; };
+		12D1DB83168AE38D008D866A /* PerformanceLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB82168AE38D008D866A /* PerformanceLibrary.m */; };
+		12D1DB9C168AE3CC008D866A /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB8D168AE3CC008D866A /* NSObject+SBJSON.m */; };
+		12D1DB9D168AE3CC008D866A /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB8F168AE3CC008D866A /* NSString+SBJSON.m */; };
+		12D1DB9E168AE3CC008D866A /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB91168AE3CC008D866A /* SBJSON.m */; };
+		12D1DB9F168AE3CC008D866A /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB93168AE3CC008D866A /* SBJsonBase.m */; };
+		12D1DBA0168AE3CC008D866A /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB95168AE3CC008D866A /* SBJsonParser.m */; };
+		12D1DBA1168AE3CC008D866A /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB97168AE3CC008D866A /* SBJsonWriter.m */; };
+		12D1DBA2168AE3CC008D866A /* PerformanceLibrary_Logic.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB99168AE3CC008D866A /* PerformanceLibrary_Logic.m */; };
+		12D1DBA5168AE430008D866A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D1DBA4168AE430008D866A /* UIKit.framework */; };
+		12D1DBAC168AE4A5008D866A /* ServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DBAB168AE4A5008D866A /* ServerConnection.m */; };
+		F9A5C4A3174E70150089CE4B /* libMAITI.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = 12D1DB78168AE38D008D866A /* libMAITI.a */; };
+		F9A5C4A4174E70E60089CE4B /* PerformanceLibrary.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 12D1DB80168AE38D008D866A /* PerformanceLibrary.h */; };
+		F9FC8825173AF0A4000BF08B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FC8824173AF0A4000BF08B /* Reachability.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		12D1DB76168AE38D008D866A /* Copy Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				12D1DB81168AE38D008D866A /* PerformanceLibrary.h in Copy Files */,
+			);
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9A5C4A2174E6FCA0089CE4B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /Users/mhill/Projects/maiti_ios/dist/;
+			dstSubfolderSpec = 0;
+			files = (
+				F9A5C4A4174E70E60089CE4B /* PerformanceLibrary.h in CopyFiles */,
+				F9A5C4A3174E70150089CE4B /* libMAITI.a in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		12D1DB78168AE38D008D866A /* libMAITI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMAITI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		12D1DB7B168AE38D008D866A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		12D1DB7F168AE38D008D866A /* MAITI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MAITI-Prefix.pch"; sourceTree = "<group>"; };
+		12D1DB80168AE38D008D866A /* PerformanceLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PerformanceLibrary.h; sourceTree = "<group>"; };
+		12D1DB82168AE38D008D866A /* PerformanceLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceLibrary.m; sourceTree = "<group>"; };
+		12D1DB89168AE3CC008D866A /* AppConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
+		12D1DB8B168AE3CC008D866A /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		12D1DB8C168AE3CC008D866A /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		12D1DB8D168AE3CC008D866A /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
+		12D1DB8E168AE3CC008D866A /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		12D1DB8F168AE3CC008D866A /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
+		12D1DB90168AE3CC008D866A /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		12D1DB91168AE3CC008D866A /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
+		12D1DB92168AE3CC008D866A /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		12D1DB93168AE3CC008D866A /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
+		12D1DB94168AE3CC008D866A /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		12D1DB95168AE3CC008D866A /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		12D1DB96168AE3CC008D866A /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		12D1DB97168AE3CC008D866A /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		12D1DB98168AE3CC008D866A /* PerformanceLibrary_Logic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceLibrary_Logic.h; sourceTree = "<group>"; };
+		12D1DB99168AE3CC008D866A /* PerformanceLibrary_Logic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceLibrary_Logic.m; sourceTree = "<group>"; };
+		12D1DBA4168AE430008D866A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		12D1DBAA168AE4A5008D866A /* ServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerConnection.h; sourceTree = "<group>"; };
+		12D1DBAB168AE4A5008D866A /* ServerConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerConnection.m; sourceTree = "<group>"; };
+		F9FC8823173AF0A4000BF08B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Apple/Reachability.h; sourceTree = "<group>"; };
+		F9FC8824173AF0A4000BF08B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Apple/Reachability.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		12D1DB75168AE38D008D866A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12D1DBA5168AE430008D866A /* UIKit.framework in Frameworks */,
+				12D1DB7C168AE38D008D866A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		12D1DB6D168AE38D008D866A = {
+			isa = PBXGroup;
+			children = (
+				12D1DB7D168AE38D008D866A /* MAITI */,
+				12D1DB7A168AE38D008D866A /* Frameworks */,
+				12D1DB79168AE38D008D866A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		12D1DB79168AE38D008D866A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				12D1DB78168AE38D008D866A /* libMAITI.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		12D1DB7A168AE38D008D866A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				12D1DBA4168AE430008D866A /* UIKit.framework */,
+				12D1DB7B168AE38D008D866A /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		12D1DB7D168AE38D008D866A /* MAITI */ = {
+			isa = PBXGroup;
+			children = (
+				F9FC8826173AF0FB000BF08B /* Apple */,
+				12D1DB8A168AE3CC008D866A /* JSON */,
+				12D1DB89168AE3CC008D866A /* AppConstants.h */,
+				12D1DB98168AE3CC008D866A /* PerformanceLibrary_Logic.h */,
+				12D1DB99168AE3CC008D866A /* PerformanceLibrary_Logic.m */,
+				12D1DB80168AE38D008D866A /* PerformanceLibrary.h */,
+				12D1DB82168AE38D008D866A /* PerformanceLibrary.m */,
+				12D1DBAA168AE4A5008D866A /* ServerConnection.h */,
+				12D1DBAB168AE4A5008D866A /* ServerConnection.m */,
+				12D1DB7E168AE38D008D866A /* Supporting Files */,
+			);
+			path = MAITI;
+			sourceTree = "<group>";
+		};
+		12D1DB7E168AE38D008D866A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				12D1DB7F168AE38D008D866A /* MAITI-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		12D1DB8A168AE3CC008D866A /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				12D1DB8B168AE3CC008D866A /* JSON.h */,
+				12D1DB8C168AE3CC008D866A /* NSObject+SBJSON.h */,
+				12D1DB8D168AE3CC008D866A /* NSObject+SBJSON.m */,
+				12D1DB8E168AE3CC008D866A /* NSString+SBJSON.h */,
+				12D1DB8F168AE3CC008D866A /* NSString+SBJSON.m */,
+				12D1DB90168AE3CC008D866A /* SBJSON.h */,
+				12D1DB91168AE3CC008D866A /* SBJSON.m */,
+				12D1DB92168AE3CC008D866A /* SBJsonBase.h */,
+				12D1DB93168AE3CC008D866A /* SBJsonBase.m */,
+				12D1DB94168AE3CC008D866A /* SBJsonParser.h */,
+				12D1DB95168AE3CC008D866A /* SBJsonParser.m */,
+				12D1DB96168AE3CC008D866A /* SBJsonWriter.h */,
+				12D1DB97168AE3CC008D866A /* SBJsonWriter.m */,
+			);
+			path = JSON;
+			sourceTree = "<group>";
+		};
+		F9FC8826173AF0FB000BF08B /* Apple */ = {
+			isa = PBXGroup;
+			children = (
+				F9FC8823173AF0A4000BF08B /* Reachability.h */,
+				F9FC8824173AF0A4000BF08B /* Reachability.m */,
+			);
+			name = Apple;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		12D1DB77168AE38D008D866A /* MAITI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12D1DB86168AE38D008D866A /* Build configuration list for PBXNativeTarget "MAITI" */;
+			buildPhases = (
+				12D1DB74168AE38D008D866A /* Sources */,
+				12D1DB75168AE38D008D866A /* Frameworks */,
+				12D1DB76168AE38D008D866A /* Copy Files */,
+				F9A5C4A2174E6FCA0089CE4B /* CopyFiles */,
+				F9A5C4A5174E77F30089CE4B /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MAITI;
+			productName = PerformanceLibrary;
+			productReference = 12D1DB78168AE38D008D866A /* libMAITI.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		12D1DB6F168AE38D008D866A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = logicnext;
+			};
+			buildConfigurationList = 12D1DB72168AE38D008D866A /* Build configuration list for PBXProject "MAITI" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 12D1DB6D168AE38D008D866A;
+			productRefGroup = 12D1DB79168AE38D008D866A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				12D1DB77168AE38D008D866A /* MAITI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F9A5C4A5174E77F30089CE4B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd /Users/mhill/Projects/maiti_ios/dist/\necho \"${NATIVE_ARCH}\"\nmv ./libMAITI.a ./libMAITI.\"${NATIVE_ARCH}\".a";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		12D1DB74168AE38D008D866A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12D1DB83168AE38D008D866A /* PerformanceLibrary.m in Sources */,
+				12D1DB9C168AE3CC008D866A /* NSObject+SBJSON.m in Sources */,
+				12D1DB9D168AE3CC008D866A /* NSString+SBJSON.m in Sources */,
+				12D1DB9E168AE3CC008D866A /* SBJSON.m in Sources */,
+				12D1DB9F168AE3CC008D866A /* SBJsonBase.m in Sources */,
+				12D1DBA0168AE3CC008D866A /* SBJsonParser.m in Sources */,
+				12D1DBA1168AE3CC008D866A /* SBJsonWriter.m in Sources */,
+				12D1DBA2168AE3CC008D866A /* PerformanceLibrary_Logic.m in Sources */,
+				12D1DBAC168AE4A5008D866A /* ServerConnection.m in Sources */,
+				F9FC8825173AF0A4000BF08B /* Reachability.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		12D1DB84168AE38D008D866A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				VALID_ARCHS = "armv7 armv7s";
+			};
+			name = Debug;
+		};
+		12D1DB85168AE38D008D866A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
+			};
+			name = Release;
+		};
+		12D1DB87168AE38D008D866A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				DSTROOT = /tmp/PerformanceLibrary.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MAITI/MAITI-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = MAITI;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = NO;
+				VALID_ARCHS = "armv7 armv7s";
+			};
+			name = Debug;
+		};
+		12D1DB88168AE38D008D866A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				DSTROOT = /tmp/PerformanceLibrary.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MAITI/MAITI-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = MAITI;
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "armv7 armv7s";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		12D1DB72168AE38D008D866A /* Build configuration list for PBXProject "MAITI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12D1DB84168AE38D008D866A /* Debug */,
+				12D1DB85168AE38D008D866A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		12D1DB86168AE38D008D866A /* Build configuration list for PBXNativeTarget "MAITI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12D1DB87168AE38D008D866A /* Debug */,
+				12D1DB88168AE38D008D866A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 12D1DB6F168AE38D008D866A /* Project object */;
+}
