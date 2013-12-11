@@ -1,0 +1,48 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.riverbed.mobile.android.apmlib.datagenerator"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <application
+        android:name=".GeneratorApp"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <activity
+                android:name="com.riverbed.mobile.android.apmlib.datagenerator.MainListActivity"
+                android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+                android:name="com.riverbed.mobile.android.apmlib.datagenerator.PrefsActivity"
+                android:label="@string/app_name" >
+
+        </activity>
+
+
+        <activity
+            android:name="com.riverbed.mobile.android.apmlib.datagenerator.LoginLayout"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity
+                android:name="com.riverbed.mobile.android.apmlib.datagenerator.ThumbnailActivity"
+                android:label="@string/app_name" >
+        </activity>
+
+        <activity android:name="com.riverbed.mobile.android.apmlib.datagenerator.WebViewSample"></activity>
+    </application>
+
+</manifest>

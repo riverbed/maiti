@@ -1,0 +1,66 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="Service Settings"
+            android:key="pref_key_service_settings">
+
+        <EditTextPreference
+                android:key="pref_key_host"
+                android:summary="The server name/ip of the MAITI collector"
+                android:title="Collector Host"
+                android:defaultValue="mobile.collect-opnet.com"
+                />
+        <CheckBoxPreference
+                android:key="pref_key_use_ssl"
+                android:summary="Data can be uploaded either via HTTP or HTTPS"
+                android:title="Use SSL"
+                android:defaultValue="false" />
+        <EditTextPreference
+                android:key="pref_key_port"
+                android:summary="The port used to transmit data to the MAITI Collector"
+                android:title="Port"
+                android:defaultValue="80"
+                />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Account Information"
+            android:key="pref_key_account_settings">
+
+        <EditTextPreference
+                android:key="pref_key_customer_id"
+                android:summary="Unique Identifier for your BrowserMetrix Account"
+                android:title="Customer ID" />
+        <EditTextPreference
+                android:key="pref_key_app_id"
+                android:summary="Unique Identifier for your Application"
+                android:title="Application ID" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Collection Settings"
+            android:key="pref_key_collection_settings">
+
+        <CheckBoxPreference
+                android:key="pref_key_enabled"
+                android:summary="Enable/Disable MAITI"
+                android:title="Enabled"
+                android:defaultValue="true" />
+        <CheckBoxPreference
+                android:key="pref_key_record_conn"
+                android:summary="Record connection information (i.e., WiFi or Cellular)"
+                android:title="Record Connection"
+                android:defaultValue="true" />
+        <CheckBoxPreference
+                android:key="pref_key_record_serial"
+                android:summary="Record hardware serial number"
+                android:title="Record Serial Number"
+                android:defaultValue="true" />
+        <CheckBoxPreference
+                android:key="pref_key_record_memory"
+                android:summary="Record available/total memory"
+                android:title="Record Memory"
+                android:defaultValue="true" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

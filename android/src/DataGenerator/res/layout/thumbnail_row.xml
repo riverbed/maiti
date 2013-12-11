@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="horizontal" android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:clickable="false"
+                  android:focusable="false" >
+        <LinearLayout android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1"
+                      android:layout_marginTop="10dp">
+            <TextView android:textSize="24sp" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="TextView" android:textStyle="bold" android:paddingLeft="10dp" android:paddingTop="5dp" android:id="@+id/title"
+                      android:textIsSelectable="true"></TextView>
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="TextView" android:paddingLeft="10dp" android:id="@+id/description"></TextView>
+        </LinearLayout>
+        <ImageView android:layout_marginLeft="5dp" android:layout_width="64dp" android:layout_marginRight="5dp" android:layout_height="64dp" android:id="@+id/thumb" android:layout_marginTop="10dp"
+                   android:layout_marginBottom="5dp"
+                   android:background="@android:color/transparent"/>
+    </LinearLayout>
+</LinearLayout>
