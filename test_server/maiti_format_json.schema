@@ -1,0 +1,206 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Record Set",
+    "type": "array",
+    "items": {
+        "title": "Record",
+        "type": "object",
+        "oneOf": [
+			{ "$ref": "#/definitions/intervalTransaction" },
+			{ "$ref": "#/definitions/notificationTransaction" }
+		]
+		
+	},
+	"definitions":
+	{
+		"notificationTransaction":
+		{
+			"required": [	"type", "os", "sess_id", "model", "pkg_id", "offset_ms", 
+					"ver", "name", "agent_type", "cust_id", "app_id", "code_ver"
+				],
+			"additionalProperties": false,
+			
+			"properties": {
+				
+				"type":			{ "type": "string", "pattern": "notification"},
+				
+				"id":			{ "$ref": "#/definitions/fields/properties/id" },
+				"os": 			{ "$ref": "#/definitions/fields/properties/os" },
+				"sess_id": 		{ "$ref": "#/definitions/fields/properties/sess_id" },
+				"model": 		{ "$ref": "#/definitions/fields/properties/model" },
+				"pkg_id": 		{ "$ref": "#/definitions/fields/properties/pkg_id" },
+				"conn": 		{ "$ref": "#/definitions/fields/properties/conn" },
+				"offset_ms": 	{ "$ref": "#/definitions/fields/properties/offset_ms" },
+				"utag1": 		{ "$ref": "#/definitions/fields/properties/utag" },
+				"utag2": 		{ "$ref": "#/definitions/fields/properties/utag" },
+				"utag3": 		{ "$ref": "#/definitions/fields/properties/utag" },
+				"udata": 		{ "$ref": "#/definitions/fields/properties/udata" },
+				"mem_free": 	{ "$ref": "#/definitions/fields/properties/mem_free" },
+				"mem_total": 	{ "$ref": "#/definitions/fields/properties/mem_total" },
+				"ver": 			{ "$ref": "#/definitions/fields/properties/ver" },
+				"name": 		{ "$ref": "#/definitions/fields/properties/name" },
+				"agent_type": 	{ "$ref": "#/definitions/fields/properties/agent_type" },
+				"ser_num":		{ "$ref": "#/definitions/fields/properties/ser_num" },
+				"cust_id": 		{ "$ref": "#/definitions/fields/properties/cust_id" },
+				"app_id": 		{ "$ref": "#/definitions/fields/properties/app_id" },
+				"error": 		{ "$ref": "#/definitions/fields/properties/error" },
+				"code_ver": 	{ "$ref": "#/definitions/fields/properties/code_ver" }
+			}
+		},
+		"intervalTransaction":
+		{
+			"required": [	"type", "os", "sess_id", "model", "pkg_id", "dur", "offset_ms", 
+							"ver", "id", "name", "agent_type", "cust_id", "app_id", "code_ver"
+						],
+			"additionalProperties": false,
+			
+			"properties": 
+			{
+				"type":			{ "type": "string", "pattern": "interval"},
+				
+				"id":			{ "$ref": "#/definitions/fields/properties/id" },
+				"os": 			{ "$ref": "#/definitions/fields/properties/os" },
+				"sess_id": 		{ "$ref": "#/definitions/fields/properties/sess_id" },
+				"model": 		{ "$ref": "#/definitions/fields/properties/model" },
+				"pkg_id": 		{ "$ref": "#/definitions/fields/properties/pkg_id" },
+				"conn": 		{ "$ref": "#/definitions/fields/properties/conn" },
+				"dur": 			{ "$ref": "#/definitions/fields/properties/dur" },
+				"offset_ms": 	{ "$ref": "#/definitions/fields/properties/offset_ms" },
+				"utag1": 		{ "$ref": "#/definitions/fields/properties/utag" },
+				"utag2": 		{ "$ref": "#/definitions/fields/properties/utag" },
+				"utag3": 		{ "$ref": "#/definitions/fields/properties/utag" },
+				"udata": 		{ "$ref": "#/definitions/fields/properties/udata" },
+				"mem_free": 	{ "$ref": "#/definitions/fields/properties/mem_free" },
+				"mem_total": 	{ "$ref": "#/definitions/fields/properties/mem_total" },
+				"ver": 			{ "$ref": "#/definitions/fields/properties/ver" },
+				"name": 		{ "$ref": "#/definitions/fields/properties/name" },
+				"agent_type": 	{ "$ref": "#/definitions/fields/properties/agent_type" },
+				"ser_num": 		{ "$ref": "#/definitions/fields/properties/ser_num" },
+				"cust_id": 		{ "$ref": "#/definitions/fields/properties/cust_id" },
+				"app_id": 		{ "$ref": "#/definitions/fields/properties/app_id" },
+				"error": 		{ "$ref": "#/definitions/fields/properties/error" },
+				"parent_id": 	{ "$ref": "#/definitions/fields/properties/id" },
+				"code_ver": 	{ "$ref": "#/definitions/fields/properties/code_ver" },
+				"events": 		{ "$ref": "#/definitions/fields/properties/events" }
+
+			}
+        },
+		
+		"fields":
+		{
+			"properties":
+			{
+				"id": {
+					"description": "ID for the transaction",
+					"type": "string",
+					"maxLength": 64 
+				},
+				"os": {
+					"description": "The mobile OS version",
+					"type": "string",
+					"maxLength": 32 
+				},
+				"sess_id": {
+					"description": "A randomly generated Session ID that changes every time the user opens the app",
+					"type": "string",
+					"maxLength": 64 
+				},
+				"model": {
+					"description": "The device hardware model",
+					"type": "string",
+					"maxLength": 256 
+				},
+				"pkg_id": {
+					"description": "The unique ID of the app (e.g., com.opnet.mobile.arx)",
+					"type": "string",
+					"maxLength": 256 
+				},
+				"conn": {
+					"description": "Current connection type",
+					"enum": [ "wifi", "3g", "4g", "unknown" ]
+				},
+				"dur": {
+					"description": "Duration in milliseconds",
+					"type": "number",
+					"minimum": 0,
+					"maximum": 2678400000
+				},
+				"offset_ms": {
+					"description": "The time spent in the client-side buffer before being uploaded",
+					"type": "number",
+					"minimum": 0,
+					"maximum": 5000
+				},
+				"utag": {
+					"description": "User-defined field that should be indexed",
+					"type": "string",
+					"maxLength": 128
+				},
+				"udata": {
+					"description": "User-defined data that should not be indexed",
+					"type": "string",
+					"maxLength": 16384 
+				},
+				"mem_free": {
+					"description": "Amount of memory free in bytes",
+					"type": "number",
+					"minimum": 0
+				},
+				"mem_total": {
+					"description": "Total memory in bytes",
+					"type": "number",
+					"minimum": 0
+				},
+				"ver": {
+					"description": "EUEMon client version",
+					"type": "number",
+					"minimum": 1
+				},
+				"name": {
+					"description": "Name of the transaction",
+					"type": "string",
+					"maxLength": 1024
+				},
+				"agent_type": {
+					"description": "Type of agent (numbers representing iOS or Android)",
+					"type": "string",
+					"enum": [ "droid", "ios" ]
+				},
+				"ser_num": {
+					"description": "A unique ID for this mobile device",
+					"type": "string",
+					"maxLength": 256
+				},
+				"cust_id": {
+					"description": "The EUEMon Customer ID",
+					"type": "string",
+					"maxLength": 128
+				},
+				"app_id": {
+					"description": "The EUEMon Application ID",
+					"type": "string",
+					"maxLength": 128
+				},
+				"error": {
+					"description": "If the transaction ended in an error, this value will exist",
+					"type": "string",
+					"maxLength": 1024
+				},
+				"code_ver": {
+					"type": "string",
+					"maxLength": 32 
+				},
+				"events": {
+					"description": "Events that occur during an interval transaction",
+					"type": "object",
+					"patternProperties": {
+						"^.+$": {"type": "number"}
+					},
+					"additionalProperties": false,
+					"minItems": 1,
+					"uniqueItems": true
+				}
+			}
+		}
+    }
+}

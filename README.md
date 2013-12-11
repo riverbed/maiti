@@ -2,15 +2,15 @@
 
 The Mobile Application Instrumentation Telemetry Interface (MAITI) provides Android and iOS APIs to monitor mobile application performance and usage.
 
-Developers use the APIs to “instrument” their applications and report data to BrowserMetrix, Riverbed’s MAITI-compliant collection server.  The BrowserMetrix Web user interface presents detailed insight into end-to-end performance, geography, platform type, and response time. In addition to mobile app data, BrowserMetrix also collects web page performance and usage data via JavaScript page tagging. BrowserMetrix can be deployed as a SaaS or On-premise solution.
+Developers use the APIs to "instrument" their applications and report data to BrowserMetrix, Riverbed’s MAITI-compliant collection server.  The BrowserMetrix Web user interface presents detailed insight into end-to-end performance, geography, platform type, and response time. In addition to mobile app data, BrowserMetrix also collects web page performance and usage data via JavaScript page tagging. BrowserMetrix can be deployed as a SaaS or On-premise solution.
 
-Developers add calls to MAITI in their apps that enable transaction monitoring.  (In this context, a “transaction” is any application activity for which the developer wants to measure elapsed time.)  
+Developers add calls to MAITI in their apps that enable transaction monitoring.  (In this context, a "transaction" is any application activity for which the developer wants to measure elapsed time.)
 
 MAITI uses transaction bracketing to detect the start and end of user transactions and records the response time and other metrics. For instance, such an interval transaction could begin with the user tapping a button, and end with the resulting display of data. MAITI allows developers to capture response times for an unrestricted number of transactions. 
 
-Within transactions, developers can specify events and free-form user data to associate with an interval transaction.  These elements all appear in the BrowserMetrix user interface as transaction details.  Events denote any activity of interest within a transaction.  User “tags” are searchable in the BrowserMetrix user interface.  They can record any contextual information the developer wants, such as the user name, or the name and version of the mobile app. Another user data element is not searchable but can contain more data, so is suitable for stack traces and longer text.
+Within transactions, developers can specify events and free-form user data to associate with an interval transaction.  These elements all appear in the BrowserMetrix user interface as transaction details.  Events denote any activity of interest within a transaction.  User "tags" are searchable in the BrowserMetrix user interface.  They can record any contextual information the developer wants, such as the user name, or the name and version of the mobile app. Another user data element is not searchable but can contain more data, so is suitable for stack traces and longer text.
 
-Developers can also specify “notification” transactions that appear in the BrowserMetrix user interface as user-searchable transactions.  Unlike interval transactions, notifications do not have a start and end time.  Like events, notifications denote an activity of interest but are not associated with an interval transaction. 
+Developers can also specify "notification" transactions that appear in the BrowserMetrix user interface as user-searchable transactions.  Unlike interval transactions, notifications do not have a start and end time.  Like events, notifications denote an activity of interest but are not associated with an interval transaction. 
 
 This document provides some simple examples to get started and reference information about the APIs.  Complete sample apps are available with the MAITI source code.
 
@@ -36,7 +36,7 @@ public class SampleApplication extends Application {
 		{
 			ue = new UserExperience( "[YourCustomerID]", "[YourAppId]", this.getApplicationContext());
 		} catch (PermissionsException) {
-			throw new RuntimeException(“Required Permissions are not declared in the AndroidManifest.xml”);
+			throw new RuntimeException("Required Permissions are not declared in the AndroidManifest.xml");
 	}
 
 		super.onCreate();	
@@ -75,7 +75,7 @@ private void showList()
 Instantiate the **PerformanceLibrary** object once and use it throughout the iOS app.  Initialize **PerformanceLibrary** in the **applicationDidFinishLaunching** function in your application delegate, as shown below:
 
 ``` objective-c
-#import “PerformanceLibrary.h”
+#import "PerformanceLibrary.h"
 
 @synthesize _PerformanceLibrary;
 
@@ -94,7 +94,7 @@ Once initialized, use the **PerformanceLibrary** object to measure transaction p
 - (void)showList
 {
 	NSString *transId = 	[[_AppDelegate _PerformanceLibrary] 
-				TransactionStart: @”Show Music List”];
+				TransactionStart: @"Show Music List"];
 	
 	[self downloadMusic]; 
 	[self updateList];
@@ -117,7 +117,7 @@ Download the MAITI source code and add it to Eclipse as anAndroid project.
 Add the MAITI project to your Android code as an Android library:
 
 * Right click on your Android app project and select Properties
-* Select the “Android” item on the left window pane
+* Select the "Android" item on the left window pane
 * Add a new library project and select the MAITI project
 
 
@@ -179,7 +179,7 @@ public void setEnabled(boolean enabled)
 
 Starts an interval transaction and returns a TransactionId object used in other methods to refer to the transaction.
 
-Interval transactions can optionally specify a parent transaction.  The BrowserMetrix Web user interface indicates child and parent transactions.  For example, a transaction named “Login” could contain two child transactions named “Authorize Credentials” and “Gather User Info”.
+Interval transactions can optionally specify a parent transaction.  The BrowserMetrix Web user interface indicates child and parent transactions.  For example, a transaction named "Login" could contain two child transactions named "Authorize Credentials" and "Gather User Info".
 
 ``` java
 public TransactionId transactionStart(String transactionName)
@@ -442,7 +442,7 @@ Specifies a notification transaction.  Notifications appear as transactions in t
 
 Starts an interval transaction and returns a TransactionId object used in other methods to refer to the transaction.
 
-Interval transactions can optionally specify a parent transaction.  The BrowserMetrix Web user interface indicates child and parent transactions.  For example, a transaction named “Login” could contain two child transactions named “Authorize Credentials” and “Gather User Info”.
+Interval transactions can optionally specify a parent transaction.  The BrowserMetrix Web user interface indicates child and parent transactions.  For example, a transaction named "Login" could contain two child transactions named "Authorize Credentials" and "Gather User Info".
 
 ``` objective-c
 -(NSString*)TransactionStart:(NSString*)name;

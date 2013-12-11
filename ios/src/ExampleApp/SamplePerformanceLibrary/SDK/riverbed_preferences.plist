@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Enabled</key>
+	<true/>
+	<key>DataCollectorHost</key>
+	<string>192.168.0.156</string>
+	<key>UseHTTPS</key>
+	<false/>
+	<key>RecordSerial</key>
+	<true/>
+	<key>RecordMemory</key>
+	<true/>
+	<key>DataCollectorPort</key>
+	<string>8001</string>
+	<key>RecordConnectionType</key>
+	<true/>
+</dict>
+</plist>
