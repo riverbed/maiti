@@ -513,7 +513,8 @@ enum errorcode{
     }
     @catch (NSException *e)
     {
-        UDID=[[UIDevice currentDevice] uniqueIdentifier];     //Deprecated in iOS 5
+        //UDID=[[UIDevice currentDevice] uniqueIdentifier];     //Deprecated in iOS 5
+        UDID = [self CreateTransactionID];
     }
     
     if (UDID == NULL)
