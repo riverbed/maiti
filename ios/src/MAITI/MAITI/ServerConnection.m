@@ -44,7 +44,7 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
 #pragma mark -  NSURLConnection (Connect to server)
 -(void)WebApi_ConnectionObject:(NSMutableArray*)AllData customerId:(NSString*) customerId{
     
-    NSString *encodedJson = encodeToPercentEscapeString( [self.jsonWriter stringWithObject:AllData] );
+    NSString *encodedJson = [self encodeToPercentEscapeString:[self.jsonWriter stringWithObject:AllData]];
     NSString *post_var=[NSString stringWithFormat:@"eueMon=mobile&ver=%d&jsid=%@&payload=%@",SDK_VERSION, customerId,
                         encodedJson];
     NSString *post = post_var;
@@ -87,7 +87,7 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
 }
 
 // URL Encode the query parameter
-NSString* encodeToPercentEscapeString(NSString *original_text)
+-(NSString*)encodeToPercentEscapeString:(NSString*)original_text
 {
     return (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef) original_text,
                                                               NULL,(CFStringRef) @";/?:@&=$+{}<>,",
