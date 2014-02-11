@@ -414,9 +414,10 @@ enum errorcode{
 -(NSString*)CreateTransactionID{
     
     CFUUIDRef newTransactionID = CFUUIDCreate(kCFAllocatorDefault);
-    NSString * TransactionID = (NSString*)CFUUIDCreateString(kCFAllocatorDefault, newTransactionID);
+    CFStringRef fcstr = CFUUIDCreateString(kCFAllocatorDefault, newTransactionID);
+    NSString* TransactionID = [NSString stringWithString:(NSString*)fcstr];
     CFRelease(newTransactionID);
-    
+    CFRelease(fcstr);
     return TransactionID;
 }
 
@@ -424,9 +425,10 @@ enum errorcode{
 -(void)CreateSessionId{
     
     CFUUIDRef newSessionID = CFUUIDCreate(kCFAllocatorDefault);
-    self.Session_Id = (NSString*)CFUUIDCreateString(kCFAllocatorDefault, newSessionID);
+    CFStringRef cfstr = CFUUIDCreateString(kCFAllocatorDefault, newSessionID);
+    self.Session_Id = [NSString stringWithString:(NSString*)cfstr];
     CFRelease(newSessionID);
-    
+    CFRelease(cfstr);
     //NSLog(@"CreateSessionID %@", Session_Id);
 }
 

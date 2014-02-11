@@ -13,22 +13,38 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
 #import "AppConstants.h"
 #import "PerformanceLibrary_Logic.h"
 
+@interface ServerConnection()
+{
+}
+
+@property (nonatomic, retain) SBJsonWriter* jsonWriter;
+@property (nonatomic, retain) NSMutableData* Server_ReceiveData;
+
+@end
+
 @implementation ServerConnection
 
-@synthesize logic_view;
 
--(id)init{
+-(id)init
+{
     //Write JSON Object
-    jsonWriter = [[SBJsonWriter new] retain];
+    self.jsonWriter = [[[SBJsonWriter alloc] init] autorelease];
     
     return self;
+}
+
+-(void)dealloc
+{
+    self.jsonWriter = nil;
+    self.Server_ReceiveData = nil;
+    [super dealloc];
 }
 
 
 #pragma mark -  NSURLConnection (Connect to server)
 -(void)WebApi_ConnectionObject:(NSMutableArray*)AllData customerId:(NSString*) customerId{
     
-    NSString *encodedJson = encodeToPercentEscapeString( [jsonWriter stringWithObject:AllData] );
+    NSString *encodedJson = encodeToPercentEscapeString( [self.jsonWriter stringWithObject:AllData] );
     NSString *post_var=[NSString stringWithFormat:@"eueMon=mobile&ver=%d&jsid=%@&payload=%@",SDK_VERSION, customerId,
                         encodedJson];
     NSString *post = post_var;
@@ -36,12 +52,12 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
     [encodedJson release];
     
     NSString *dataCollectorUrl;
-    if ([[[logic_view Preferences] objectForKey:@"UseHTTPS"] integerValue] == 0) {
-            dataCollectorUrl = [NSString stringWithFormat:@"http://%@:%@/beacon.gif",[[logic_view Preferences] objectForKey:@"DataCollectorHost"],[[logic_view Preferences] objectForKey:@"DataCollectorPort"]];
+    if ([[[self.logic_view Preferences] objectForKey:@"UseHTTPS"] integerValue] == 0) {
+            dataCollectorUrl = [NSString stringWithFormat:@"http://%@:%@/beacon.gif",[[self.logic_view Preferences] objectForKey:@"DataCollectorHost"],[[self.logic_view Preferences] objectForKey:@"DataCollectorPort"]];
     }
     else
     {
-            dataCollectorUrl = [NSString stringWithFormat:@"https://%@:%@/beacon.gif",[[logic_view Preferences] objectForKey:@"DataCollectorHost"],[[logic_view Preferences] objectForKey:@"DataCollectorPort"]];
+            dataCollectorUrl = [NSString stringWithFormat:@"https://%@:%@/beacon.gif",[[self.logic_view Preferences] objectForKey:@"DataCollectorHost"],[[self.logic_view Preferences] objectForKey:@"DataCollectorPort"]];
     }
     
     //NSLog(@"URL: %@",[NSString stringWithFormat:@"%@",[[logic_view Preferences] objectForKey:@"DataCollectorHost"]]);
@@ -60,32 +76,34 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
     NSLog(@"MAITI Post: %@", post);
     
     NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if(!conn){
+    if(!conn)
+    {
         //UIAlertView *information = [[UIAlertView alloc] initWithTitle:@"Server Connection is not availability" message:nil  delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         //[information show];
         //[information release];
-    }else {
-        Server_ReceiveData=[[NSMutableData alloc] init];
-       
     }
+    else
+        self.Server_ReceiveData = [[[NSMutableData alloc] init] autorelease];
 }
 
 // URL Encode the query parameter
 NSString* encodeToPercentEscapeString(NSString *original_text)
 {
-    return (NSString *) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef) original_text,
-                                                                NULL,
-                                                                (CFStringRef) @"!*~:@$,",
-                                                                kCFStringEncodingUTF8);
-    
+    return (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef) original_text,
+                                                              NULL,(CFStringRef) @";/?:@&=$+{}<>,",
+                                                              kCFStringEncodingUTF8);
 }
 
 
 #pragma mark -  NSURLConnection Delegate Function
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
+
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
     
 }
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
+
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
    
         //NSString *str=[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
         //NSLog(@"Receive DATA: %@",str);
@@ -95,7 +113,8 @@ NSString* encodeToPercentEscapeString(NSString *original_text)
 	
 }
 
--(void)connectionDidFinishLoading:(NSURLConnection *)connection{
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
    // NSString *responseString=[[NSString alloc] initWithData:Server_ReceiveData encoding:NSUTF8StringEncoding];
    // NSError *jsonError=nil;
    // SBJSON *json = [[SBJSON new] autorelease];
@@ -105,8 +124,7 @@ NSString* encodeToPercentEscapeString(NSString *original_text)
     
     //Release data
     //[responseString release];
-    [Server_ReceiveData release];
-    Server_ReceiveData=nil;
+    self.Server_ReceiveData = nil;
     
     [connection release];
     connection=nil;
@@ -122,8 +140,7 @@ NSString* encodeToPercentEscapeString(NSString *original_text)
     
     NSLog(@"MAITI Connection Error: %@",[error localizedDescription]);
     
-    [Server_ReceiveData release];
-    Server_ReceiveData=nil;
+    self.Server_ReceiveData=nil;
     
     [connection release];
     connection=nil;
