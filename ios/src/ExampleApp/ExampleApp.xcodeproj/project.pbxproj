@@ -31,10 +31,7 @@
 		12F7FDE9168DDB1B0027F397 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7FDDB168DDB1A0027F397 /* WebViewController.m */; };
 		12F7FDEA168DDB1B0027F397 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F7FDDC168DDB1A0027F397 /* WebViewController.xib */; };
 		12F7FDEC168DDB770027F397 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F7FDEB168DDB770027F397 /* SystemConfiguration.framework */; };
-		F9A5C4A8174E7EF80089CE4B /* libMAITI.armv7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A5C4A6174E7EF80089CE4B /* libMAITI.armv7.a */; };
-		F9A5C4A9174E7EF80089CE4B /* libMAITI.i386.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A5C4A7174E7EF80089CE4B /* libMAITI.i386.a */; };
-		F9A5C4AA174E7F150089CE4B /* libMAITI.armv7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A5C4A6174E7EF80089CE4B /* libMAITI.armv7.a */; };
-		F9A5C4AB174E7F150089CE4B /* libMAITI.i386.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A5C4A7174E7EF80089CE4B /* libMAITI.i386.a */; };
+		93C5598B18AB97D4002651E1 /* MAITI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93C5598A18AB97D4002651E1 /* MAITI.framework */; };
 		F9FB7AA91715D31300A30AC8 /* riverbed_preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = F9FB7AA81715D31300A30AC8 /* riverbed_preferences.plist */; };
 		F9FB7AB117303BD600A30AC8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9FB7AB017303BD600A30AC8 /* SenTestingKit.framework */; };
 		F9FB7AB217303BD600A30AC8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F7FD9F168DDADF0027F397 /* UIKit.framework */; };
@@ -84,8 +81,7 @@
 		12F7FDDB168DDB1A0027F397 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		12F7FDDC168DDB1A0027F397 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		12F7FDEB168DDB770027F397 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		F9A5C4A6174E7EF80089CE4B /* libMAITI.armv7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMAITI.armv7.a; path = ../../dist/libMAITI.armv7.a; sourceTree = "<group>"; };
-		F9A5C4A7174E7EF80089CE4B /* libMAITI.i386.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMAITI.i386.a; path = ../../dist/libMAITI.i386.a; sourceTree = "<group>"; };
+		93C5598A18AB97D4002651E1 /* MAITI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAITI.framework; path = ../../distr/MAITI.framework; sourceTree = "<group>"; };
 		F9FB7AA81715D31300A30AC8 /* riverbed_preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = riverbed_preferences.plist; path = SDK/riverbed_preferences.plist; sourceTree = "<group>"; };
 		F9FB7AAF17303BD600A30AC8 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9FB7AB017303BD600A30AC8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -94,7 +90,6 @@
 		F9FB7ABA17303BD600A30AC8 /* UnitTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnitTests.h; sourceTree = "<group>"; };
 		F9FB7ABB17303BD600A30AC8 /* UnitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTests.m; sourceTree = "<group>"; };
 		F9FB7ABD17303BD600A30AC8 /* UnitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Prefix.pch"; sourceTree = "<group>"; };
-		F9FC8846173B13B6000BF08B /* PerformanceLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PerformanceLibrary.h; path = ../../dist/PerformanceLibrary.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,12 +97,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93C5598B18AB97D4002651E1 /* MAITI.framework in Frameworks */,
 				12F7FDEC168DDB770027F397 /* SystemConfiguration.framework in Frameworks */,
 				12F7FDA0168DDADF0027F397 /* UIKit.framework in Frameworks */,
 				12F7FDA2168DDADF0027F397 /* Foundation.framework in Frameworks */,
 				12F7FDA4168DDADF0027F397 /* CoreGraphics.framework in Frameworks */,
-				F9A5C4A8174E7EF80089CE4B /* libMAITI.armv7.a in Frameworks */,
-				F9A5C4A9174E7EF80089CE4B /* libMAITI.i386.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,8 +109,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9A5C4AA174E7F150089CE4B /* libMAITI.armv7.a in Frameworks */,
-				F9A5C4AB174E7F150089CE4B /* libMAITI.i386.a in Frameworks */,
 				F9FB7AB117303BD600A30AC8 /* SenTestingKit.framework in Frameworks */,
 				F9FB7AB217303BD600A30AC8 /* UIKit.framework in Frameworks */,
 				F9FB7AB317303BD600A30AC8 /* Foundation.framework in Frameworks */,
@@ -130,9 +122,6 @@
 		12F7FD90168DDADF0027F397 = {
 			isa = PBXGroup;
 			children = (
-				F9A5C4A6174E7EF80089CE4B /* libMAITI.armv7.a */,
-				F9A5C4A7174E7EF80089CE4B /* libMAITI.i386.a */,
-				F9FC8846173B13B6000BF08B /* PerformanceLibrary.h */,
 				12F7FDA5168DDADF0027F397 /* ExampleApp */,
 				F9FB7AB417303BD600A30AC8 /* UnitTests */,
 				12F7FD9E168DDADF0027F397 /* Frameworks */,
@@ -152,6 +141,7 @@
 		12F7FD9E168DDADF0027F397 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				93C5598A18AB97D4002651E1 /* MAITI.framework */,
 				12F7FDEB168DDB770027F397 /* SystemConfiguration.framework */,
 				12F7FD9F168DDADF0027F397 /* UIKit.framework */,
 				12F7FDA1168DDADF0027F397 /* Foundation.framework */,
@@ -460,16 +450,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../distr",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SamplePerformanceLibrary/ExampleApp-Prefix.pch";
 				INFOPLIST_FILE = "SamplePerformanceLibrary/ExampleApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/SamplePerformanceLibrary/SDK\"",
-					"\"$(SRCROOT)/../../src/PerformanceLibrary/PerformanceLibrary/SDK\"",
-					"\"$(SRCROOT)/../MAITI/MAITI/SDK\"",
-					"\"$(SRCROOT)/../../dist\"",
+					"$(SRCROOT)/../../distr",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = ExampleApp;
@@ -481,16 +472,17 @@
 		12F7FDC1168DDADF0027F397 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../distr",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SamplePerformanceLibrary/ExampleApp-Prefix.pch";
 				INFOPLIST_FILE = "SamplePerformanceLibrary/ExampleApp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/SamplePerformanceLibrary/SDK\"",
-					"\"$(SRCROOT)/../../src/PerformanceLibrary/PerformanceLibrary/SDK\"",
-					"\"$(SRCROOT)/../MAITI/MAITI/SDK\"",
-					"\"$(SRCROOT)/../../dist\"",
+					"$(SRCROOT)/../../distr",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = ExampleApp;
@@ -515,9 +507,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../src/PerformanceLibrary/PerformanceLibrary/SDK\"",
-					"\"$(SRCROOT)/../MAITI/MAITI/SDK\"",
-					"\"$(SRCROOT)/../../dist\"",
+					"\"$(SRCROOT)/../../distr\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -542,9 +532,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../src/PerformanceLibrary/PerformanceLibrary/SDK\"",
-					"\"$(SRCROOT)/../MAITI/MAITI/SDK\"",
-					"\"$(SRCROOT)/../../dist\"",
+					"\"$(SRCROOT)/../../distr\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
