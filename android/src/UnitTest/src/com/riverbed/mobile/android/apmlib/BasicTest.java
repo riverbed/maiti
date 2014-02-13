@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.riverbed.mobile.android.apmlib.objects.TransactionId;
 
@@ -175,7 +176,35 @@ public class BasicTest extends AndroidTestCase {
 	}
 	
 	
-	
+	public void testReasonableOffsetTime() throws Exception
+	{
+        StubDataHandler stubDataHandler = new StubDataHandler("TESTCust", new SettingsObject(), false);
+        UserExperience apm = new UserExperience("TESTCust", "TestApp", this.getContext());
+        apm.setMockDataHandler(stubDataHandler);
+        
+
+		TransactionId id = apm.transactionStart("Interval 1");
+
+		apm.setTransactionError(id, "errerr");
+		
+		apm.notification("Notification", "Error", null, null, null, null);
+		sleep(500);
+		apm.transactionEnd(id);
+		
+		
+		// Check that the JsonArray is not null
+        JSONArray json = stubDataHandler.getJsonArray();
+		assertTrue(json != null);
+
+		assertTrue(json.length() == 2);
+		
+		JSONObject transactionData1 = (JSONObject) json.get(0);
+		JSONObject transactionData2 = (JSONObject) json.get(1);
+		
+		assertTrue(transactionData1.getInt(DataHandler.KEY_BUFFEROFFSET) < 10000);
+		assertTrue(transactionData2.getInt(DataHandler.KEY_BUFFEROFFSET) < 10000);
+
+	}
 	
 	public static void sleep(long ms)
 	{
