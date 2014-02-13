@@ -69,6 +69,7 @@ class DataHandler extends Handler {
     protected final String customerID;
 
     protected Poster activePoster = null;
+    protected HttpClient client = new DefaultHttpClient();
 
     DataHandler(String customerID, SettingsObject settings)
     {
@@ -201,7 +202,6 @@ class DataHandler extends Handler {
     protected void sendJson(final JSONArray jsonArrayPosting) {
 
 
-        HttpClient client = new DefaultHttpClient();
 
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); //Timeout Limit
         HttpResponse response;
