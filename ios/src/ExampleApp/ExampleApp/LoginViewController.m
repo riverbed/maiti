@@ -129,21 +129,23 @@
     [request setHTTPBody:postData];
     
     NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if(!conn){
-        UIAlertView *information = [[UIAlertView alloc] initWithTitle:@"Server Connection is not availability" message:nil  delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    if(!conn)
+    {
+        UIAlertView *information = [[[UIAlertView alloc] initWithTitle:@"Server Connection is not availability"
+                                                               message:nil
+                                                              delegate:self
+                                                     cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
         [information show];
-        [information release];
     }
-    else {
-        self.Server_ReceiveData=[[NSMutableData alloc] init];
+    else
+    {
+        self.Server_ReceiveData=[[[NSMutableData alloc] init] autorelease];
         
         //Transaction Start
 
         
         self.transID=[[_AppDelegate performanceLibrary] TransactionStart:@"Login" ];
         [[_AppDelegate performanceLibrary] SetUserTag1:@"http://www.apple.com/" transactionId:self.transID];
-         
-
         
     }
 }
@@ -151,16 +153,16 @@
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
    
 }
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
-    NSString *str=[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    NSString *str=[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease];
     NSLog(@"Receive DATA: %@",str);
     [self.Server_ReceiveData appendData:data];
-    
-	
 }
 
--(void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    NSString *responseString=[[NSString alloc] initWithData:self.Server_ReceiveData encoding:NSUTF8StringEncoding];
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSString *responseString=[[[NSString alloc] initWithData:self.Server_ReceiveData encoding:NSUTF8StringEncoding] autorelease];
        
      NSLog(@"ALL Receive DATA: %@",responseString);
     
@@ -173,27 +175,27 @@
     self.logout_but.alpha=1.0;
     
     //Release data
-    [responseString release];
     self.Server_ReceiveData=nil;
     
     [connection release];
-    connection=nil;
-    
 }
+
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     
-    UIAlertView *information = [[UIAlertView alloc] initWithTitle:@"Connection failed" message:[error localizedDescription]  delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK",nil];
+    UIAlertView *information = [[[UIAlertView alloc] initWithTitle:@"Connection failed"
+                                                           message:[error localizedDescription]
+                                                          delegate:self
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:@"OK",nil] autorelease];
     //[information setTag:400];
     [information show];
-    [information release];
     
     NSLog(@"%@",[error localizedDescription]);
     
     self.Server_ReceiveData=nil;
     
     [connection release];
-    connection=nil;
 }
 
 
