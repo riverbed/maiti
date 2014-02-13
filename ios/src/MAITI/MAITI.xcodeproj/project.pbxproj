@@ -32,6 +32,7 @@
 		12D1DBA2168AE3CC008D866A /* PerformanceLibrary_Logic.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DB99168AE3CC008D866A /* PerformanceLibrary_Logic.m */; };
 		12D1DBA5168AE430008D866A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D1DBA4168AE430008D866A /* UIKit.framework */; };
 		12D1DBAC168AE4A5008D866A /* ServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D1DBAB168AE4A5008D866A /* ServerConnection.m */; };
+		933ADDDD18ACF35500662BFB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933ADDDC18ACF35500662BFB /* SystemConfiguration.framework */; };
 		939C9C4A185734B400D35C14 /* PerformanceLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 12D1DB80168AE38D008D866A /* PerformanceLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9FC8825173AF0A4000BF08B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FC8824173AF0A4000BF08B /* Reachability.m */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,7 @@
 		12D1DBA4168AE430008D866A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		12D1DBAA168AE4A5008D866A /* ServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerConnection.h; sourceTree = "<group>"; };
 		12D1DBAB168AE4A5008D866A /* ServerConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerConnection.m; sourceTree = "<group>"; };
+		933ADDDC18ACF35500662BFB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F9FC8823173AF0A4000BF08B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Apple/Reachability.h; sourceTree = "<group>"; };
 		F9FC8824173AF0A4000BF08B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Apple/Reachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				933ADDDD18ACF35500662BFB /* SystemConfiguration.framework in Frameworks */,
 				12D1DBA5168AE430008D866A /* UIKit.framework in Frameworks */,
 				12D1DB7C168AE38D008D866A /* Foundation.framework in Frameworks */,
 			);
@@ -98,6 +101,7 @@
 		12D1DB7A168AE38D008D866A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				933ADDDC18ACF35500662BFB /* SystemConfiguration.framework */,
 				12D1DBA4168AE430008D866A /* UIKit.framework */,
 				12D1DB7B168AE38D008D866A /* Foundation.framework */,
 			);

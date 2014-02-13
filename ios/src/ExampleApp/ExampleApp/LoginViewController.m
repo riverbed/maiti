@@ -102,12 +102,13 @@
 }
 
 #pragma mark - Alert Message
--(void)GenericAlert:title msg:(NSString*)msg{
+-(void)GenericAlert:title msg:(NSString*)msg
+{
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title
-                                                    message:msg
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil] autorelease];
+                                                     message:msg
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil] autorelease];
     [alert show];
 }
 
