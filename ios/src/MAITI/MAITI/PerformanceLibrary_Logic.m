@@ -494,7 +494,7 @@ enum errorcode
         NSLog(@"Failed to fetch vm statistics");
     
     /* Stats in bytes */
-    natural_t mem_free = vm_stat.free_count * pagesize;
+    long mem_free = vm_stat.free_count * pagesize;
     
     return (long) mem_free;
 }
@@ -515,11 +515,11 @@ enum errorcode
         NSLog(@"Failed to fetch vm statistics");
     
     /* Stats in bytes */
-    natural_t mem_used = (vm_stat.active_count +
+    long mem_used = (vm_stat.active_count +
                           vm_stat.inactive_count +
                           vm_stat.wire_count) * pagesize;
-    natural_t mem_free = vm_stat.free_count * pagesize;
-    natural_t mem_total = mem_used + mem_free;
+    long mem_free = vm_stat.free_count * pagesize;
+    long mem_total = mem_used + mem_free;
     
     return (long) mem_total;
 }

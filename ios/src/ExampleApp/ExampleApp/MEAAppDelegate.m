@@ -1,36 +1,37 @@
 //
-//  AppDelegate.m
-//  SamplePerformanceLibrary
+//  MEAAppDelegate.m
+//  ExampleApp
 //
-//  Copyright (c) 2013 Riverbed Technology. All rights reserved.
+//  Created by Roman Makhnenko on 12/02/14.
+//  Copyright (c) 2014 DataArt Solutions, Inc. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "MEAAppDelegate.h"
 
-#import "ViewController.h"
+@interface MEAAppDelegate()
 
-@implementation AppDelegate
 
-@synthesize _PerformanceLibrary;
+@end
 
-- (void)dealloc
+@implementation MEAAppDelegate
+
+-(void)dealloc
 {
-    [_window release];
-    [_viewController release];
+    self.window = nil;
+    self.performanceLibrary = nil;
     [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    _PerformanceLibrary=[[PerformanceLibrary alloc] initWithCustomerId:@"myCustomerId" appId:@"myAppId"];
-    
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
-    self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
     return YES;
+}
+
+-(PerformanceLibrary*)performanceLibrary
+{
+    if (!_performanceLibrary)
+        self.performanceLibrary = [[[PerformanceLibrary alloc] initWithCustomerId:@"myCustomerId" appId:@"myAppId"] autorelease];
+    return _performanceLibrary;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

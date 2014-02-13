@@ -10,12 +10,22 @@
 #import "LoginViewController.h"
 
 @interface TableViewController ()
+{
+    NSMutableArray *testArray;
+}
+
+@property(nonatomic,retain)IBOutlet UITableView *tableview;
 
 @end
 
 @implementation TableViewController
 
 @synthesize tableview;
+
+-(void)dealloc
+{
+    [super dealloc];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -77,14 +87,16 @@
 {
     // Navigation logic may go here. Create and push another view controller.
     
-    if (indexPath.row == 0) {
-        LoginViewController *_LoginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+    if (indexPath.row == 0)
+    {
+        LoginViewController *_LoginViewController = [[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
         [self.navigationController pushViewController:_LoginViewController animated:YES];
-        [_LoginViewController release];
-    }else if(indexPath.row == 1){
-        WebViewController *_WebViewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
+        
+    }
+    else if(indexPath.row == 1)
+    {
+        WebViewController *_WebViewController = [[[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil] autorelease];
         [self.navigationController pushViewController:_WebViewController animated:YES];
-        [_WebViewController release];
         
     }
     

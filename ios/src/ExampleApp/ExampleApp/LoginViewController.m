@@ -6,20 +6,41 @@
 //
 
 #import "LoginViewController.h"
-#import "AppDelegate.h"
+#import "MEAAppDelegate.h"
 
 @interface LoginViewController ()
+
+@property(nonatomic,assign) id AppDelegate;
+@property(nonatomic,retain) NSString *transID;
+@property(nonatomic,retain) SBJsonWriter *jsonWriter; //For Json writer
+@property(nonatomic,retain) NSMutableData *Server_ReceiveData;
+
+@property(nonatomic,retain)IBOutlet UITextField *userName;
+@property(nonatomic,retain)IBOutlet UITextField *Password;
+@property(nonatomic,retain)IBOutlet UIButton *login_but;
+@property(nonatomic,retain)IBOutlet UIButton *logout_but;
+
+-(IBAction)login:(id)sender;
+-(IBAction)logout:(id)sender;
+
 -(void)GenericAlert:title msg:(NSString*)msg;
 -(void)WebApi_ConnectionObject;
+
 @end
 
 @implementation LoginViewController
 
-@synthesize _AppDelegate;
-@synthesize userName;
-@synthesize Password;
-@synthesize login_but;
-@synthesize logout_but;
+-(void)dealloc
+{
+    self.userName = nil;
+    self.Password = nil;
+    self.login_but = nil;
+    self.logout_but = nil;
+    self.transID = nil;
+    self.jsonWriter = nil;
+    self.Server_ReceiveData = nil;
+    [super dealloc];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,29 +52,29 @@
 }
 
 -(IBAction)login:(id)sender{
-    if ([[userName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] <= 0){
+    if ([[self.userName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] <= 0){
         [self GenericAlert:nil msg:@"User Name cannot be left blank."];
     }
-    else if ([[Password.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] <= 0){
+    else if ([[self.Password.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] <= 0){
         [self GenericAlert:nil msg:@"Password cannot be left blank."];
     }else{
          
         [self WebApi_ConnectionObject];
-        Password.text=@"";
+        self.Password.text=@"";
     }
 }
 
 -(IBAction)logout:(id)sender{
-    userName.alpha=1.0;
-    Password.alpha=1.0;
-    login_but.alpha=1.0;
-    logout_but.alpha=0.0;
+    self.userName.alpha=1.0;
+    self.Password.alpha=1.0;
+    self.login_but.alpha=1.0;
+    self.logout_but.alpha=0.0;
     
     //Transaction Strat
 
     
     NSError *error = nil;
-    [[_AppDelegate _PerformanceLibrary] Notification:@"Logout" userTag1:@""];
+    [[_AppDelegate performanceLibrary] Notification:@"Logout" userTag1:@""];
     NSLog(@"error %@", error.localizedDescription);
     
 }
@@ -62,16 +83,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [userName becomeFirstResponder];
+    [self.userName becomeFirstResponder];
     
     //Assign Application Delegate
-	_AppDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
-    jsonWriter = [[SBJsonWriter new] retain];
+	_AppDelegate=(MEAAppDelegate*)[[UIApplication sharedApplication] delegate];
+    self.jsonWriter = [[SBJsonWriter new] retain];
 
-    userName.alpha=1.0;
-    Password.alpha=1.0;
-    login_but.alpha=1.0;
-    logout_but.alpha=0.0;
+    self.userName.alpha=1.0;
+    self.Password.alpha=1.0;
+    self.login_but.alpha=1.0;
+    self.logout_but.alpha=0.0;
 }
 
 - (void)didReceiveMemoryWarning
@@ -82,24 +103,23 @@
 
 #pragma mark - Alert Message
 -(void)GenericAlert:title msg:(NSString*)msg{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title
                                                     message:msg
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+                                          otherButtonTitles:nil] autorelease];
     [alert show];
-    [alert release];
 }
 
 
 
 -(void)WebApi_ConnectionObject{
     
-    NSString *post_var=[NSString stringWithFormat:@"input=%@",[jsonWriter stringWithObject:[NSDictionary dictionaryWithObjectsAndKeys:userName.text,@"userName",Password.text,@"userPassword",nil]]];
+    NSString *post_var=[NSString stringWithFormat:@"input=%@",[self.jsonWriter stringWithObject:[NSDictionary dictionaryWithObjectsAndKeys:self.userName.text,@"userName",self.Password.text,@"userPassword",nil]]];
     NSString *post = post_var;
        
     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%ld", (long)[postData length]];
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.google.com/"]]];
     
@@ -115,13 +135,13 @@
         [information release];
     }
     else {
-        Server_ReceiveData=[[NSMutableData alloc] init];
+        self.Server_ReceiveData=[[NSMutableData alloc] init];
         
         //Transaction Start
 
         
-        transID=[[_AppDelegate _PerformanceLibrary] TransactionStart:@"Login" ];
-        [[_AppDelegate _PerformanceLibrary] SetUserTag1:@"http://www.apple.com/" transactionId:transID];
+        self.transID=[[_AppDelegate performanceLibrary] TransactionStart:@"Login" ];
+        [[_AppDelegate performanceLibrary] SetUserTag1:@"http://www.apple.com/" transactionId:self.transID];
          
 
         
@@ -134,28 +154,27 @@
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
     NSString *str=[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
     NSLog(@"Receive DATA: %@",str);
-    [Server_ReceiveData appendData:data];
+    [self.Server_ReceiveData appendData:data];
     
 	
 }
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    NSString *responseString=[[NSString alloc] initWithData:Server_ReceiveData encoding:NSUTF8StringEncoding];
+    NSString *responseString=[[NSString alloc] initWithData:self.Server_ReceiveData encoding:NSUTF8StringEncoding];
        
      NSLog(@"ALL Receive DATA: %@",responseString);
     
      //Transaction End
-    [[_AppDelegate _PerformanceLibrary] TransactionEnd:transID];
+    [[_AppDelegate performanceLibrary] TransactionEnd:self.transID];
     
-    userName.alpha=0.0;
-    Password.alpha=0.0;
-    login_but.alpha=0.0;
-    logout_but.alpha=1.0;
+    self.userName.alpha=0.0;
+    self.Password.alpha=0.0;
+    self.login_but.alpha=0.0;
+    self.logout_but.alpha=1.0;
     
     //Release data
     [responseString release];
-    [Server_ReceiveData release];
-    Server_ReceiveData=nil;
+    self.Server_ReceiveData=nil;
     
     [connection release];
     connection=nil;
@@ -171,8 +190,7 @@
     
     NSLog(@"%@",[error localizedDescription]);
     
-    [Server_ReceiveData release];
-    Server_ReceiveData=nil;
+    self.Server_ReceiveData=nil;
     
     [connection release];
     connection=nil;

@@ -1,35 +1,42 @@
 //
-//  PerformanceLibraryTests.m
-//  PerformanceLibraryTests
+//  ExampleAppTests.m
+//  ExampleAppTests
 //
-//  Copyright (c) 2013 Riverbed Technology. All rights reserved.
+//  Created by Roman Makhnenko on 12/02/14.
+//  Copyright (c) 2014 DataArt Solutions, Inc. All rights reserved.
 //
 
-#import "UnitTests.h"
+#import <XCTest/XCTest.h>
+#import "MAITI/PerformanceLibrary.h"
 
-@implementation PerformanceLibraryTests
+@interface ExampleAppTests : XCTestCase
+{
+}
 
-@synthesize _PerformanceLibrary;
+@property(retain, nonatomic) PerformanceLibrary *PerformanceLibrary;
+
+@end
+
+@implementation ExampleAppTests
 
 - (void)setUp
 {
     [super setUp];
-    
-    _PerformanceLibrary=[[PerformanceLibrary alloc] initWithCustomerId:@"myCustomerId" appId:@"myAppId"];
+    self.PerformanceLibrary=[[[PerformanceLibrary alloc] initWithCustomerId:@"myCustomerId" appId:@"myAppId"] autorelease];
 }
 
 - (void)tearDown
 {
-    // Tear-down code here.
-    
+    self.PerformanceLibrary = nil;
     [super tearDown];
 }
 
 - (void)testIntervalTransaction
 {
+//    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
     // Normal Interval Transaction
     NSString* transID=[_PerformanceLibrary TransactionStart: @"Load Test1" ];
-   
+    
     // Bad value for interval transaction ID
     [_PerformanceLibrary TransactionEnd:@""];
     
@@ -48,7 +55,6 @@
     [_PerformanceLibrary SetUserTag1:NULL transactionId:transID];
     [_PerformanceLibrary SetUserTag1:@"" transactionId:NULL];
     [_PerformanceLibrary TransactionEnd:transID];
-    
 }
 
 - (void)testDisabledTransactions
@@ -76,7 +82,7 @@
     
     // Null both values
     [_PerformanceLibrary Notification:NULL userTag1: NULL ];
-
+    
 }
 
 @end

@@ -6,20 +6,29 @@
 //
 
 #import "WebViewController.h"
-#import "AppDelegate.h"
+#import "MEAAppDelegate.h"
 
 // hit apple w/ a 5000 millisecond delay
 #define WEBPAGE_URL @"http://deelay.me/5000?http://www.apple.com/"
 
 @interface WebViewController ()
 
+@property(nonatomic,assign) MEAAppDelegate* AppDelegate;
+@property(nonatomic,retain) IBOutlet UIWebView *webview;
+@property(nonatomic,retain) NSString *transID;
+
 @end
 
 @implementation WebViewController
 
-
-@synthesize webview;
-@synthesize _AppDelegate;
+-(void)dealloc
+{
+    self.webview.delegate = nil;
+    [self.webview stopLoading];
+    self.webview = nil;
+    self.transID = nil;
+    [super dealloc];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,21 +45,10 @@
     // Do any additional setup after loading the view from its nib.
     
     //Assign Application Delegate
-	_AppDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+	_AppDelegate=(MEAAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:WEBPAGE_URL]];
-   [webview loadRequest:theRequest];
-}
-
-- (void)dealloc
-{
-    if (webview)
-    {
-        [webview setDelegate:NULL];
-        [webview stopLoading];
-    }
-    
-    [super dealloc];
+   [self.webview loadRequest:theRequest];
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,26 +66,28 @@
 - (void)webViewDidStartLoad:(UIWebView *)_webView
 {
 
-    transID=[[_AppDelegate _PerformanceLibrary] TransactionStart: @"Load Web Page" ];
+    self.transID=[self.AppDelegate.performanceLibrary TransactionStart: @"Load Web Page" ];
     
     
-    [[_AppDelegate _PerformanceLibrary] SetUserTag1:WEBPAGE_URL transactionId:transID];
+    [self.AppDelegate.performanceLibrary SetUserTag1:WEBPAGE_URL transactionId:self.transID];
     
     
-    [[_AppDelegate _PerformanceLibrary] SetTransactionEvent:@"Load \"&\" Start" transactionId: transID];
-    [[_AppDelegate _PerformanceLibrary] SetErrorMessage:@"Error doing something" transactionId: transID];
+    [self.AppDelegate.performanceLibrary SetTransactionEvent:@"Load \"&\" Start" transactionId:self.transID];
+    [self.AppDelegate.performanceLibrary SetErrorMessage:@"Error doing something" transactionId:self.transID];
     
     [NSThread sleepForTimeInterval:0.302];
     
-    NSString* simpleSubTransId = [[_AppDelegate _PerformanceLibrary] TransactionStart: @"Load Web Page" parentTransactionId:transID ];
+    NSString* simpleSubTransId = [self.AppDelegate.performanceLibrary TransactionStart: @"Load Web Page" parentTransactionId:self.transID ];
     
-    [[_AppDelegate _PerformanceLibrary] TransactionEnd:simpleSubTransId];
+    [self.AppDelegate.performanceLibrary TransactionEnd:simpleSubTransId];
     
 
 
 }
-- (void)webViewDidFinishLoad:(UIWebView *)_webView
+
+-(void)webViewDidFinishLoad:(UIWebView *)_webView
 {
-    [[_AppDelegate _PerformanceLibrary] TransactionEnd:transID];
+    [self.AppDelegate.performanceLibrary TransactionEnd:self.transID];
 }
+
 @end

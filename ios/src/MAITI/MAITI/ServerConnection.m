@@ -62,9 +62,8 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
     
     //NSLog(@"URL: %@",[NSString stringWithFormat:@"%@",[[logic_view Preferences] objectForKey:@"DataCollectorHost"]]);
 
-    
     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%ld", (long)[postData length]];
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", dataCollectorUrl]]];
     
