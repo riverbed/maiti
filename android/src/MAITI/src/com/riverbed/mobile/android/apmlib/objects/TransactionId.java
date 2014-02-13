@@ -26,6 +26,17 @@ public class TransactionId implements Parcelable {
     {
          this.id = in.readString();
     }
+
+    public static final Parcelable.Creator<TransactionId> CREATOR
+            = new Parcelable.Creator<TransactionId>() {
+        public TransactionId createFromParcel(Parcel in) {
+            return new TransactionId(in);
+        }
+
+        public TransactionId[] newArray(int size) {
+            return new TransactionId[size];
+        }
+    };
 	
 	public String toString()
 	{
