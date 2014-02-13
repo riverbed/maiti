@@ -418,10 +418,14 @@ public class UserExperience
 
         if (appSettings.isEnabled() == false)
             return;
+        
+        long now = getCurrentTime();
 
         MaitiTransaction appPerfDO = new MaitiTransaction();
         appPerfDO.setTransactionID(new TransactionId(Utility.generate_Random(20)));
         appPerfDO.setTransactionType(TransactionType.NotificationTransaction);
+        
+		appPerfDO.setTimestampStartTime(now);
 
         appPerfDO.setTransactionName(transactionName);
 
