@@ -18,9 +18,25 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
 #include <sys/sysctl.h>
 #import "ServerConnection.h"
 
-
-
 @interface PerformanceLibrary_Logic ()
+{
+}
+
+@property(nonatomic,copy)NSString *app_code_ver;
+@property(nonatomic,copy)NSString *package_id;
+
+@property(nonatomic,copy) NSString *Session_Id;
+@property(nonatomic,copy) NSString *customer_id;
+@property(nonatomic,copy) NSString *app_id;
+
+@property(nonatomic,retain) NSMutableDictionary *active_interval_transaction;
+@property(nonatomic,retain) NSMutableArray *completed_interval_transaction;
+@property(nonatomic,retain) NSMutableDictionary *event_transaction;
+@property(nonatomic,retain) NSMutableArray *notification_transaction;
+
+@property (nonatomic, retain) NSMutableArray* AllSendingData_Array;
+@property (nonatomic, retain) NSTimer* TimeIntervalToConnectServer;
+
 -(NSString*)CreateTransactionID; //Create unique transaction ID
 -(void)CreateSessionId;
 -(int)calculateDuration:(NSDate*)start_time end_time:(NSDate*)end_time;
@@ -32,25 +48,31 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
 -(NSString*)CurrentNetwork;
 -(void)sendDataToServer;
 -(NSDictionary*)returnErrorDescription:(NSInteger)errorcode;
+
 @end
 
 @implementation PerformanceLibrary_Logic
 
-@synthesize Preferences;
-@synthesize active_interval_transaction;
-@synthesize completed_interval_transaction;
-@synthesize event_transaction;
-@synthesize notification_transaction;
+-(void)dealloc
+{
+    self.AllSendingData_Array = nil;
+    [self.TimeIntervalToConnectServer invalidate];
+    self.TimeIntervalToConnectServer = nil;
+    self.Preferences = nil;
+    self.active_interval_transaction = nil;
+    self.completed_interval_transaction = nil;
+    self.event_transaction = nil;
+    self.notification_transaction = nil;
+    self.Session_Id = nil;
+    self.customer_id = nil;
+    self.app_id = nil;
+    self.app_code_ver = nil;
+    self.package_id = nil;
+    [super dealloc];
+}
 
-@synthesize Session_Id;
-@synthesize customer_id;
-@synthesize app_id;
-@synthesize app_code_ver;
-@synthesize package_id;
-@synthesize Disabled;
-
-
-enum errorcode{
+enum errorcode
+{
     NullParameters =100,
     InvalidNameParameters=101,
     TooLongUserTag=102,
@@ -63,54 +85,53 @@ enum errorcode{
     self.app_id = appId;
 
     //NSLog(@"%@, %@", customer_id, app_id);
-    package_id = [[NSBundle mainBundle] bundleIdentifier];
-    if (package_id == NULL)
-        package_id = @"unknown";
+    self.package_id = [[NSBundle mainBundle] bundleIdentifier];
+    if (self.package_id == NULL)
+        self.package_id = @"unknown";
     
     CFStringRef ver = CFBundleGetValueForInfoDictionaryKey(CFBundleGetMainBundle(), kCFBundleVersionKey);
-    app_code_ver = (NSString*) ver;
+    self.app_code_ver = (NSString*) ver;
     
-    if (app_code_ver == NULL)
-        app_code_ver = @"unknown";
+    if (self.app_code_ver == NULL)
+        self.app_code_ver = @"unknown";
     
     NSLog(@"Initialized Riverbed Mobile App Instrumentation Telemetry Interface (MAITI)" );
     
     return self.init;
 }
 
--(id)init {
+-(id)init
+{
     //Set Preferences
     NSString *preferences_path = [[NSBundle mainBundle] pathForResource:@"riverbed_preferences" ofType:@"plist"];
-    Preferences=[[NSDictionary alloc] initWithContentsOfFile:preferences_path];
+    self.Preferences=[[[NSDictionary alloc] initWithContentsOfFile:preferences_path] autorelease];
     
-    
-    if (Preferences != NULL)
+    if (self.Preferences != NULL)
+        NSLog(@"MAITI initialized with customer-supplied preferences: %@",self.Preferences);
+    else
     {
-        NSLog(@"MAITI initialized with customer-supplied preferences: %@",Preferences);
-    }
-    else {
         NSLog(@"MAITI initialized with default preferences");
-        Preferences=[[NSDictionary alloc] initWithObjectsAndKeys:@"mobile.collect-opnet.com",PREF_HOST,
+        self.Preferences=[[[NSDictionary alloc] initWithObjectsAndKeys:@"mobile.collect-opnet.com",PREF_HOST,
                      @"1",PREF_ENABLED,
                      @"1",PREF_RECORD_CONN,
                      @"1",PREF_RECORD_MEM,
                      @"1",PREF_RECORD_SERIAL,
                      @"0",PREF_USE_HTTPS,
                      @"80",PREF_PORT,
-                     nil];
+                     nil] autorelease];
          //NSLog(@"Using Default Preferences: %@",Preferences);
     }
     
-    self.Disabled = ![[Preferences objectForKey:PREF_ENABLED] boolValue];
+    self.Disabled = ![[self.Preferences objectForKey:PREF_ENABLED] boolValue];
     
-    active_interval_transaction=[[NSMutableDictionary alloc] init];
-    completed_interval_transaction=[[NSMutableArray alloc] init];
-    event_transaction=[[NSMutableDictionary alloc] init];
-    notification_transaction=[[NSMutableArray alloc] init];
+    self.active_interval_transaction=[[[NSMutableDictionary alloc] init] autorelease];
+    self.completed_interval_transaction=[[[NSMutableArray alloc] init] autorelease];
+    self.event_transaction=[[[NSMutableDictionary alloc] init] autorelease];
+    self.notification_transaction=[[[NSMutableArray alloc] init] autorelease];
 
     
-    TimeIntervalToConnectServer=[NSTimer scheduledTimerWithTimeInterval:SEND_BUFFER_TIMER_INTERVAL_SEC target:self selector:@selector(sendDataToServer) userInfo:nil repeats:YES];
-    AllSendingData_Array=[[NSMutableArray alloc] init];
+    self.TimeIntervalToConnectServer=[NSTimer scheduledTimerWithTimeInterval:SEND_BUFFER_TIMER_INTERVAL_SEC target:self selector:@selector(sendDataToServer) userInfo:nil repeats:YES];
+    self.AllSendingData_Array=[[[NSMutableArray alloc] init] autorelease];
     
     // Create the session ID immediately -- before the app has a chance to show its screen.  We don't want this value to ever be null
     [self CreateSessionId];
@@ -123,54 +144,62 @@ enum errorcode{
     return self;
 }
 
--(Boolean)IsDisabled{
-    if (customer_id == NULL || app_id == NULL)
+-(Boolean)IsDisabled
+{
+    if (self.customer_id == NULL || self.app_id == NULL)
         return YES;
     
-    return Disabled;
+    return self.Disabled;
     //return ([[Preferences objectForKey:@"Enabled"] boolValue] == NO);
 }
 
 
 
 //Set Interval Parameter
--(NSString*)SetIntervalTransaction:(NSMutableDictionary*)parameters  error:(NSError**)error{
-    
+-(NSString*)SetIntervalTransaction:(NSMutableDictionary*)parameters  error:(NSError**)error
+{
     if ([self IsDisabled] == YES)
         return @"";
     
-    
-    NSMutableDictionary *_parameters=[[NSMutableDictionary alloc] initWithDictionary:parameters];
+    NSMutableDictionary *_parameters=[[[NSMutableDictionary alloc] initWithDictionary:parameters] autorelease];
     //Create transaction Id
-    NSString *transactionId = [NSString stringWithFormat:@"%@",[self CreateTransactionID]];
+    NSString *transactionId = [self CreateTransactionID];
     
     //check error
-    if (parameters == NULL) {
+    if (parameters == NULL)
+    {
         *error = [[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:NullParameters userInfo:[self returnErrorDescription:NullParameters]];
-         return nil;
-    }else if([_parameters objectForKey:JSONKEY_TRANSACTION_NAME] == NULL){
+        return nil;
+    }
+    else
+    if ([_parameters objectForKey:JSONKEY_TRANSACTION_NAME] == NULL)
+    {
         *error = [[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:InvalidNameParameters userInfo:[self returnErrorDescription:InvalidNameParameters]];
         return nil;
     }
-    else if ([_parameters objectForKey:JSONKEY_PARENT_ID] != NULL)
+    else
+    if ([_parameters objectForKey:JSONKEY_PARENT_ID] != NULL)
     {
         // If they've specified a parent id, set a hidden event that is our start time relative to the parent's
         // This way, when viewing the data, the relative times will be 100% accurate and not affected by bw/latency
-        NSString* parentId = [_parameters objectForKey:JSONKEY_PARENT_ID];
-        
-        if ([active_interval_transaction objectForKey:parentId] != NULL)
+        NSMutableDictionary *events = nil;
+        @synchronized(self.active_interval_transaction)
         {
-            // calculate the difference between now and our parent's start time
+            NSString* parentId = [_parameters objectForKey:JSONKEY_PARENT_ID];
+            if ([self.active_interval_transaction objectForKey:parentId] != NULL)
+            {
+                // calculate the difference between now and our parent's start time
+                NSMutableDictionary *parentParemeters = [self.active_interval_transaction objectForKey:parentId];
+                int duration=[self calculateDuration:[parentParemeters objectForKey:JSONKEY_STARTTIME] end_time:[NSDate date]];
             
-            NSMutableDictionary *parentParemeters = [active_interval_transaction objectForKey:parentId];
-            int duration=[self calculateDuration:[ parentParemeters objectForKey:JSONKEY_STARTTIME] end_time:[NSDate date]];
-            
-            //Add Private event to this transaction
-            NSMutableDictionary *events=[[NSMutableDictionary alloc] init];
-            [events setObject:[NSNumber numberWithInt:duration] forKey:PARENT_OFFSET_KEY];
-            [event_transaction setObject:events forKey:transactionId];
-            [events release];
-            
+                //Add Private event to this transaction
+                events=[[[NSMutableDictionary alloc] init] autorelease];
+                [events setObject:[NSNumber numberWithInt:duration] forKey:PARENT_OFFSET_KEY];
+            }
+        }
+        @synchronized(self.event_transaction)
+        {
+            [self.event_transaction setObject:events forKey:transactionId];
         }
     }
 
@@ -179,21 +208,21 @@ enum errorcode{
     [_parameters setObject:self.customer_id forKey:JSONKEY_CUSTOMER_ID];
     [_parameters setObject:self.app_id forKey:JSONKEY_APP_ID];
     [_parameters setObject:transactionId forKey:JSONKEY_TRANSACTION_ID];
-    [_parameters setObject:Session_Id forKey:JSONKEY_SESSION_ID];
+    [_parameters setObject:self.Session_Id forKey:JSONKEY_SESSION_ID];
     [_parameters setObject:[NSNumber numberWithInt:SDK_VERSION] forKey:JSONKEY_MAITI_VERSION];
     [_parameters setObject:AGENT_TYPE forKey:JSONKEY_AGENT_TYPE];
     [_parameters setObject:[self DeviceModel] forKey:JSONKEY_HW_MODEL];
     [_parameters setObject:[UIDevice currentDevice].systemVersion forKey:JSONKEY_OS_VERSION ];
-    [_parameters setObject:package_id forKey:JSONKEY_PACKAGE_ID];
-    [_parameters setObject:app_code_ver forKey:JSONKEY_CODE_VER];
+    [_parameters setObject:self.package_id forKey:JSONKEY_PACKAGE_ID];
+    [_parameters setObject:self.app_code_ver forKey:JSONKEY_CODE_VER];
         
-    if ([[Preferences objectForKey:PREF_RECORD_SERIAL] integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_SERIAL] integerValue] == 1) {
          [_parameters setObject:[self DeviceUDID] forKey:JSONKEY_HW_SERIAL_NUMBER];
     }
-    if ([[Preferences objectForKey:PREF_RECORD_CONN]  integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_CONN]  integerValue] == 1) {
          [_parameters setObject:[self CurrentNetwork] forKey:JSONKEY_CONNECTION_TYPE];
     }
-    if ([[Preferences objectForKey:PREF_RECORD_MEM] integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_MEM] integerValue] == 1) {
         long mem_free = [self iPhoneFreeMemory];
         long mem_total = [self iPhoneTotalMemory];
         [_parameters setObject:[NSNumber numberWithUnsignedLong: mem_free] forKey:JSONKEY_MEM_FREE];
@@ -202,13 +231,12 @@ enum errorcode{
     
     [_parameters setObject:[NSDate date] forKey:JSONKEY_STARTTIME];
     
-    [active_interval_transaction setObject:_parameters forKey:transactionId];
+    @synchronized(self.active_interval_transaction)
+    {
+        [self.active_interval_transaction setObject:_parameters forKey:transactionId];
+    }
     
-    [_parameters release];
-   
-    
-    
-     return [transactionId copy];
+    return transactionId;
 }
 
 //Complete Interval Parameter
@@ -217,43 +245,51 @@ enum errorcode{
     if ([self IsDisabled] == YES)
         return;
     
-    if ([active_interval_transaction objectForKey:transactionId] != NULL) {
-        
-        //Add Other Parameters
-        NSMutableDictionary *_parameters=[[NSMutableDictionary alloc] initWithDictionary:[active_interval_transaction objectForKey:transactionId]];
-        
-        int duration=[self calculateDuration:[_parameters  objectForKey:JSONKEY_STARTTIME] end_time:[NSDate date]];
-        [_parameters setObject:[NSNumber numberWithInt:duration] forKey:JSONKEY_DURATION]; //Calculate Duration
-        
-        [_parameters removeObjectForKey:JSONKEY_STARTTIME];    //Remove start time
-        
-        [_parameters setObject:[NSDate date] forKey:JSONKEY_ENDTIME];  //Transaction End Time
-        
-        if(([_parameters objectForKey:JSONKEY_USERTAG1] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG1] length] > 128)){
-            NSString *str = [_parameters objectForKey:JSONKEY_USERTAG1];
-            str = [str substringToIndex: 128];
-            [_parameters setObject:str forKey:JSONKEY_USERTAG1];
+    NSMutableDictionary *_parameters = nil;
+    
+    @synchronized(self.active_interval_transaction)
+    {
+        if ([self.active_interval_transaction objectForKey:transactionId] != NULL)
+        {
+            
+            //Add Other Parameters
+            _parameters=[[[NSMutableDictionary alloc] initWithDictionary:[self.active_interval_transaction objectForKey:transactionId]] autorelease];
+            
+            int duration=[self calculateDuration:[_parameters  objectForKey:JSONKEY_STARTTIME] end_time:[NSDate date]];
+            [_parameters setObject:[NSNumber numberWithInt:duration] forKey:JSONKEY_DURATION]; //Calculate Duration
+            
+            [_parameters removeObjectForKey:JSONKEY_STARTTIME];    //Remove start time
+            
+            [_parameters setObject:[NSDate date] forKey:JSONKEY_ENDTIME];  //Transaction End Time
+            
+            if(([_parameters objectForKey:JSONKEY_USERTAG1] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG1] length] > 128)){
+                NSString *str = [_parameters objectForKey:JSONKEY_USERTAG1];
+                str = [str substringToIndex: 128];
+                [_parameters setObject:str forKey:JSONKEY_USERTAG1];
+            }
+            if(([_parameters objectForKey:JSONKEY_USERTAG2] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG2] length] > 128)){
+                NSString *str = [_parameters objectForKey:JSONKEY_USERTAG2];
+                str = [str substringToIndex: 128];
+                [_parameters setObject:str forKey:JSONKEY_USERTAG2];
+            }
+            if(([_parameters objectForKey:JSONKEY_USERTAG3] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG3] length] > 128)){
+                NSString *str = [_parameters objectForKey:JSONKEY_USERTAG3];
+                str = [str substringToIndex: 128];
+                [_parameters setObject:str forKey:JSONKEY_USERTAG3];
+            }
+            if(([_parameters objectForKey:JSONKEY_USERDATA] != NULL) && ([[_parameters objectForKey:JSONKEY_USERDATA] length] > 16384)){
+                NSString *str = [_parameters objectForKey:JSONKEY_USERDATA];
+                str = [str substringToIndex: 16384];
+                [_parameters setObject:str forKey:JSONKEY_USERDATA];
+            }
+            
+            [self.active_interval_transaction removeObjectForKey:transactionId];
         }
-        if(([_parameters objectForKey:JSONKEY_USERTAG2] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG2] length] > 128)){
-            NSString *str = [_parameters objectForKey:JSONKEY_USERTAG2];
-            str = [str substringToIndex: 128];
-            [_parameters setObject:str forKey:JSONKEY_USERTAG2];
-        }
-        if(([_parameters objectForKey:JSONKEY_USERTAG3] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG3] length] > 128)){
-            NSString *str = [_parameters objectForKey:JSONKEY_USERTAG3];
-            str = [str substringToIndex: 128];
-            [_parameters setObject:str forKey:JSONKEY_USERTAG3];
-        }
-        if(([_parameters objectForKey:JSONKEY_USERDATA] != NULL) && ([[_parameters objectForKey:JSONKEY_USERDATA] length] > 16384)){
-            NSString *str = [_parameters objectForKey:JSONKEY_USERDATA];
-            str = [str substringToIndex: 16384];
-            [_parameters setObject:str forKey:JSONKEY_USERDATA];
-        }
-        
-        [completed_interval_transaction addObject:_parameters];
-        [active_interval_transaction removeObjectForKey:transactionId];
-        
-        [_parameters release];
+    }
+    if (_parameters)
+        @synchronized(self.completed_interval_transaction)
+    {
+        [self.completed_interval_transaction addObject:_parameters];
     }
     
     //NSLog(@"completed_interval_transaction: %@",completed_interval_transaction);
@@ -263,70 +299,52 @@ enum errorcode{
 {
     if ([self IsDisabled] == YES)
         return;
+    if (!data) return;
     
-    
-    if ([active_interval_transaction objectForKey:transactionId] != NULL &&
-        data != NULL) {
-        if (argument == UserTag1)
-            [[active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_USERTAG1];
-        else if (argument == UserTag2)
-             [[active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_USERTAG2];
-        else if (argument == UserTag3)
-             [[active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_USERTAG3];
-        else if (argument == UserData)
-             [[active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_USERDATA];
-        else if (argument == ParentTransactionId)
-             [[active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_PARENT_ID];
-        else if (argument == TransactionError)
-             [[active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_ERROR];
+    @synchronized(self.active_interval_transaction)
+    {
+        if ([self.active_interval_transaction objectForKey:transactionId] != NULL)
+        {
+            if (argument == UserTag1)
+                [[self.active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_USERTAG1];
+            else if (argument == UserTag2)
+                [[self.active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_USERTAG2];
+            else if (argument == UserTag3)
+                [[self.active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_USERTAG3];
+            else if (argument == UserData)
+                [[self.active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_USERDATA];
+            else if (argument == ParentTransactionId)
+                [[self.active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_PARENT_ID];
+            else if (argument == TransactionError)
+                [[self.active_interval_transaction objectForKey:transactionId] setObject:data forKey:JSONKEY_ERROR];
+        }
     }
 }
 
 
 
--(void)AddEventWithTransaction:(NSString*)eventName transactionId:(NSString*)transactionId{
-    
+-(void)AddEventWithTransaction:(NSString*)eventName transactionId:(NSString*)transactionId
+{
     if ([self IsDisabled] == YES)
         return;
     
-    if ([event_transaction objectForKey:transactionId] != NULL) {
-        
-        if ([active_interval_transaction objectForKey:transactionId] != NULL) { //Check active transaction
-            
-            //Calculate duration from start time
-            NSMutableDictionary *_parameters=[[NSMutableDictionary alloc] initWithDictionary:[active_interval_transaction objectForKey:transactionId]];
-            int duration=[self calculateDuration:[_parameters  objectForKey:JSONKEY_STARTTIME] end_time:[NSDate date]];
-            [_parameters release];
-            
-            //Add other Event
-            NSMutableDictionary *events=[[NSMutableDictionary alloc] initWithDictionary:[event_transaction objectForKey:transactionId]];
-           
-            [events setObject:[NSNumber numberWithInt:duration] forKey:eventName];
-            [event_transaction setObject:events forKey:transactionId];
-            [events release];
-            
-        }
-        
+    int duration = 0;
+    @synchronized(self.active_interval_transaction)
+    {
+        if ([self.active_interval_transaction objectForKey:transactionId] == NULL) return;
+        NSMutableDictionary *_parameters=[[[NSMutableDictionary alloc] initWithDictionary:[self.active_interval_transaction objectForKey:transactionId]] autorelease];
+        duration=[self calculateDuration:[_parameters  objectForKey:JSONKEY_STARTTIME] end_time:[NSDate date]];
     }
-    else{
-        
-        if ([active_interval_transaction objectForKey:transactionId] != NULL) { //Check active transaction
-            
-            //Calculate duration from start time
-            NSMutableDictionary *_parameters=[[NSMutableDictionary alloc] initWithDictionary:[active_interval_transaction objectForKey:transactionId]];
-            int duration=[self calculateDuration:[_parameters  objectForKey:JSONKEY_STARTTIME] end_time:[NSDate date]];
-            [_parameters release];
-        
-            //Add Events
-            NSMutableDictionary *events=[[NSMutableDictionary alloc] init];
-            [events setObject:[NSNumber numberWithInt:duration] forKey:eventName];
-            [event_transaction setObject:events forKey:transactionId];
-            [events release];
-            
-        }
-        
+    @synchronized(self.event_transaction)
+    {
+        NSMutableDictionary *events = nil;
+        if ([self.event_transaction objectForKey:transactionId] != NULL)
+            events=[[[NSMutableDictionary alloc] initWithDictionary:[self.event_transaction objectForKey:transactionId]] autorelease];
+        else
+            events=[[[NSMutableDictionary alloc] init] autorelease];
+        [events setObject:[NSNumber numberWithInt:duration] forKey:eventName];
+        [self.event_transaction setObject:events forKey:transactionId];
     }
-    
 }
 
 //Set Notification Transaction
@@ -335,37 +353,43 @@ enum errorcode{
     if ([self IsDisabled] == YES)
         return;
     
-    
-    NSString *transactionId = [NSString stringWithFormat:@"%@",[self CreateTransactionID]]; //Create transaction Id
+    NSString *transactionId = [self CreateTransactionID]; //Create transaction Id
     
     //Add Other Parameters
-    NSMutableDictionary *_parameters=[[NSMutableDictionary alloc] initWithDictionary:parameters];
+    NSMutableDictionary *_parameters=[[[NSMutableDictionary alloc] initWithDictionary:parameters] autorelease];
     
     //check error
-    if (parameters == NULL) {
-        *error = [[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:NullParameters userInfo:[self returnErrorDescription:NullParameters]];
+    if (parameters == NULL)
+    {
+        *error = [[[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:NullParameters userInfo:[self returnErrorDescription:NullParameters]] autorelease];
         return;
-    }else if([_parameters objectForKey:JSONKEY_TRANSACTION_NAME] == NULL){
-        *error = [[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:InvalidNameParameters userInfo:[self returnErrorDescription:InvalidNameParameters]];
+    }
+    else if([_parameters objectForKey:JSONKEY_TRANSACTION_NAME] == NULL)
+    {
+        *error = [[[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:InvalidNameParameters userInfo:[self returnErrorDescription:InvalidNameParameters]] autorelease];
         return;
     }
     
-    if(([_parameters objectForKey:JSONKEY_USERTAG1] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG1] length] > 128)){
+    if(([_parameters objectForKey:JSONKEY_USERTAG1] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG1] length] > 128))
+    {
         NSString *str = [_parameters objectForKey:JSONKEY_USERTAG1];
         str = [str substringToIndex: 128];
         [_parameters setObject:str forKey:JSONKEY_USERTAG1];
     }
-    if(([_parameters objectForKey:JSONKEY_USERTAG2] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG2] length] > 128)){
+    if(([_parameters objectForKey:JSONKEY_USERTAG2] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG2] length] > 128))
+    {
         NSString *str = [_parameters objectForKey:JSONKEY_USERTAG2];
         str = [str substringToIndex: 128];
         [_parameters setObject:str forKey:JSONKEY_USERTAG2];
     }
-    if(([_parameters objectForKey:JSONKEY_USERTAG3] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG3] length] > 128)){
+    if(([_parameters objectForKey:JSONKEY_USERTAG3] != NULL) && ([[_parameters objectForKey:JSONKEY_USERTAG3] length] > 128))
+    {
         NSString *str = [_parameters objectForKey:JSONKEY_USERTAG3];
         str = [str substringToIndex: 128];
         [_parameters setObject:str forKey:JSONKEY_USERTAG3];
     }
-    if(([_parameters objectForKey:JSONKEY_USERDATA] != NULL) && ([[_parameters objectForKey:JSONKEY_USERDATA] length] > 16384)){
+    if(([_parameters objectForKey:JSONKEY_USERDATA] != NULL) && ([[_parameters objectForKey:JSONKEY_USERDATA] length] > 16384))
+    {
         NSString *str = [_parameters objectForKey:JSONKEY_USERDATA];
         str = [str substringToIndex: 16384];
         [_parameters setObject:str forKey:JSONKEY_USERDATA];
@@ -376,47 +400,51 @@ enum errorcode{
     [_parameters setObject:self.customer_id forKey:JSONKEY_CUSTOMER_ID];
     [_parameters setObject:self.app_id forKey:JSONKEY_APP_ID];
     [_parameters setObject:transactionId forKey:JSONKEY_TRANSACTION_ID];
-    [_parameters setObject:Session_Id forKey:JSONKEY_SESSION_ID];
+    [_parameters setObject:self.Session_Id forKey:JSONKEY_SESSION_ID];
     [_parameters setObject:[NSNumber numberWithInt:SDK_VERSION] forKey:JSONKEY_MAITI_VERSION];
     [_parameters setObject:AGENT_TYPE forKey:JSONKEY_AGENT_TYPE];
     [_parameters setObject:[self DeviceModel] forKey:JSONKEY_HW_MODEL];
     [_parameters setObject:[UIDevice currentDevice].systemVersion forKey:JSONKEY_OS_VERSION ];
-    [_parameters setObject:package_id forKey:JSONKEY_PACKAGE_ID];
-    [_parameters setObject:app_code_ver forKey:JSONKEY_CODE_VER];
+    [_parameters setObject:self.package_id forKey:JSONKEY_PACKAGE_ID];
+    [_parameters setObject:self.app_code_ver forKey:JSONKEY_CODE_VER];
         
-    if ([[Preferences objectForKey:PREF_RECORD_SERIAL] integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_SERIAL] integerValue] == 1)
+    {
         [_parameters setObject:[self DeviceUDID] forKey:JSONKEY_HW_SERIAL_NUMBER];
     }
-    if ([[Preferences objectForKey:PREF_RECORD_CONN]  integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_CONN]  integerValue] == 1)
+    {
         [_parameters setObject:[self CurrentNetwork] forKey:JSONKEY_CONNECTION_TYPE];
     }
-    if ([[Preferences objectForKey:PREF_RECORD_MEM] integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_MEM] integerValue] == 1)
+    {
         long mem_free = [self iPhoneFreeMemory];
         long mem_total = [self iPhoneTotalMemory];
         [_parameters setObject:[NSNumber numberWithUnsignedLong: mem_free] forKey:JSONKEY_MEM_FREE];
         [_parameters setObject:[NSNumber numberWithUnsignedLong: mem_total]  forKey:JSONKEY_MEM_TOTAL];
     }
     
-   [_parameters setObject:[NSDate date] forKey:JSONKEY_ENDTIME];  //Transaction End Time 
+    [_parameters setObject:[NSDate date] forKey:JSONKEY_ENDTIME];  //Transaction End Time
     
-    [notification_transaction addObject:_parameters];
-    
+    @synchronized(self.notification_transaction)
+    {
+        [self.notification_transaction addObject:_parameters];
+    }
     //NSLog(@"notification_transaction: %@",notification_transaction);
-    
-    [_parameters release];
     
     
    
 }
 
-
 //Create unique transaction ID
--(NSString*)CreateTransactionID{
+-(NSString*)CreateTransactionID
+{
     
     CFUUIDRef newTransactionID = CFUUIDCreate(kCFAllocatorDefault);
-    NSString * TransactionID = (NSString*)CFUUIDCreateString(kCFAllocatorDefault, newTransactionID);
+    CFStringRef fcstr = CFUUIDCreateString(kCFAllocatorDefault, newTransactionID);
+    NSString* TransactionID = [NSString stringWithString:(NSString*)fcstr];
     CFRelease(newTransactionID);
-    
+    CFRelease(fcstr);
     return TransactionID;
 }
 
@@ -424,14 +452,16 @@ enum errorcode{
 -(void)CreateSessionId{
     
     CFUUIDRef newSessionID = CFUUIDCreate(kCFAllocatorDefault);
-    self.Session_Id = (NSString*)CFUUIDCreateString(kCFAllocatorDefault, newSessionID);
+    CFStringRef cfstr = CFUUIDCreateString(kCFAllocatorDefault, newSessionID);
+    self.Session_Id = [NSString stringWithString:(NSString*)cfstr];
     CFRelease(newSessionID);
-    
+    CFRelease(cfstr);
     //NSLog(@"CreateSessionID %@", Session_Id);
 }
 
 //Calculate Duration in milliseconds
--(int) calculateDuration:(NSDate*)start_time end_time:(NSDate*)end_time{
+-(int) calculateDuration:(NSDate*)start_time end_time:(NSDate*)end_time
+{
     
     double interval=[start_time timeIntervalSinceDate:end_time] * -1000.0;  //duration in milliseconds
     
@@ -440,14 +470,16 @@ enum errorcode{
 }
 
 //Calculate Buffer Duration
--(int)calculateBufferDuration:(NSDate*)time{
+-(int)calculateBufferDuration:(NSDate*)time
+{
     
     double interval=[time timeIntervalSinceDate:[NSDate date]] * -1000.0;  //duration in milliseconds
     
     return (int) interval;
 }
 
--(long)iPhoneFreeMemory{
+-(long)iPhoneFreeMemory
+{
     mach_port_t host_port;
     mach_msg_type_number_t host_size;
     vm_size_t pagesize;
@@ -462,12 +494,13 @@ enum errorcode{
         NSLog(@"Failed to fetch vm statistics");
     
     /* Stats in bytes */
-    natural_t mem_free = vm_stat.free_count * pagesize;
+    long mem_free = vm_stat.free_count * pagesize;
     
     return (long) mem_free;
 }
 
--(long)iPhoneTotalMemory{
+-(long)iPhoneTotalMemory
+{
     mach_port_t host_port;
     mach_msg_type_number_t host_size;
     vm_size_t pagesize;
@@ -482,19 +515,17 @@ enum errorcode{
         NSLog(@"Failed to fetch vm statistics");
     
     /* Stats in bytes */
-    natural_t mem_used = (vm_stat.active_count +
+    long mem_used = (vm_stat.active_count +
                           vm_stat.inactive_count +
                           vm_stat.wire_count) * pagesize;
-    natural_t mem_free = vm_stat.free_count * pagesize;
-    natural_t mem_total = mem_used + mem_free;
+    long mem_free = vm_stat.free_count * pagesize;
+    long mem_total = mem_used + mem_free;
     
     return (long) mem_total;
 }
 
-
-
-
-- (NSString *)DeviceModel {
+- (NSString *)DeviceModel
+{
     NSString *machine;
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
@@ -505,15 +536,18 @@ enum errorcode{
     return machine;
 }
 
-- (NSString *)DeviceUDID {
+- (NSString *)DeviceUDID
+{
     NSString *UDID;
     
-    @try {
+    @try
+    {
         UDID=[[[UIDevice currentDevice] identifierForVendor] UUIDString];
     }
     @catch (NSException *e)
     {
-        UDID=[[UIDevice currentDevice] uniqueIdentifier];     //Deprecated in iOS 5
+        //UDID=[[UIDevice currentDevice] uniqueIdentifier];     //Deprecated in iOS 5
+        UDID = [self CreateTransactionID];
     }
     
     if (UDID == NULL)
@@ -523,7 +557,8 @@ enum errorcode{
 }
 
 
-- (NSString *)CurrentNetwork {
+- (NSString *)CurrentNetwork
+{
     NSString *network;
     
     Reachability *reachability = [Reachability reachabilityForInternetConnection];
@@ -555,69 +590,76 @@ enum errorcode{
 }
 
 
--(void)sendDataToServer{  //Send Data to Server
+-(void)sendDataToServer
+{  //Send Data to Server
     
     if ([self IsDisabled] == YES)
         return;
     
-    if (![[self CurrentNetwork] isEqualToString:NETWORK_NOT_AVAILABLE_KEY]) {  //If Network reachable
+    if (![[self CurrentNetwork] isEqualToString:NETWORK_NOT_AVAILABLE_KEY])
+    {  //If Network reachable
         
         
-        NSMutableArray *AllData=[[NSMutableArray alloc] init];
-        
-        if([AllSendingData_Array count] != 0){
-            [AllSendingData_Array removeAllObjects];
+        NSMutableArray *AllData=[[[NSMutableArray alloc] init] autorelease];
+        [self.AllSendingData_Array removeAllObjects];
+
+        @synchronized(self.completed_interval_transaction)
+        {
+            if([self.completed_interval_transaction count] != 0)
+            {    //Interval Transaction
+                [AllData addObjectsFromArray:self.completed_interval_transaction];
+                [self.completed_interval_transaction removeAllObjects];
+            }
         }
         
-        if([completed_interval_transaction count] != 0){    //Interval Transaction
-            [AllData addObjectsFromArray:completed_interval_transaction];
-            [completed_interval_transaction removeAllObjects];
+        @synchronized(self.notification_transaction)
+        {
+            if([self.notification_transaction count] != 0)
+            {  //Notification Transaction
+                [AllData addObjectsFromArray:self.notification_transaction];
+                [self.notification_transaction removeAllObjects];
+            }
         }
         
-        if([notification_transaction count] != 0){  //Notification Transaction
-            [AllData addObjectsFromArray:notification_transaction];
-            [notification_transaction removeAllObjects];
-        }
         
-        
-        if([AllData count] != 0){
-        for (int count=0; count <[AllData count] ; count++) {
-            NSMutableDictionary *_parameters=[[NSMutableDictionary alloc] initWithDictionary:[AllData objectAtIndex:count]];
-            
-            //Calculate buffer offset
-            int BufferDuration=[self calculateBufferDuration:[_parameters  objectForKey:JSONKEY_ENDTIME]];
-            [_parameters setObject:[NSNumber numberWithInt:BufferDuration] forKey:@"offset_ms"]; //Calculate Duration
-            [_parameters removeObjectForKey:JSONKEY_ENDTIME];
-            
-            
-            //Add Events
-            if ([event_transaction objectForKey:[_parameters  objectForKey:JSONKEY_TRANSACTION_ID]] != NULL) {
-                //Add Events
-                 NSMutableDictionary *events=[[NSMutableDictionary alloc] initWithDictionary:[event_transaction objectForKey:[_parameters  objectForKey:JSONKEY_TRANSACTION_ID]]];
-                 [_parameters setObject:events forKey:@"events"];
-                [events release];
+        if([AllData count] != 0)
+        {
+            for (int count=0; count <[AllData count] ; count++)
+            {
+                NSMutableDictionary *_parameters=[[[NSMutableDictionary alloc] initWithDictionary:[AllData objectAtIndex:count]] autorelease];
                 
-                [event_transaction removeObjectForKey:[_parameters  objectForKey:JSONKEY_TRANSACTION_ID]];
+                //Calculate buffer offset
+                int BufferDuration=[self calculateBufferDuration:[_parameters  objectForKey:JSONKEY_ENDTIME]];
+                [_parameters setObject:[NSNumber numberWithInt:BufferDuration] forKey:@"offset_ms"]; //Calculate Duration
+                [_parameters removeObjectForKey:JSONKEY_ENDTIME];
+                
+                
+                //Add Events
+                @synchronized(self.event_transaction)
+                {
+                    if ([self.event_transaction objectForKey:[_parameters  objectForKey:JSONKEY_TRANSACTION_ID]] != NULL)
+                    {
+                        //Add Events
+                        NSMutableDictionary *events=[[[NSMutableDictionary alloc] initWithDictionary:[self.event_transaction objectForKey:[_parameters  objectForKey:JSONKEY_TRANSACTION_ID]]] autorelease];
+                        [_parameters setObject:events forKey:@"events"];
+                    
+                        [self.event_transaction removeObjectForKey:[_parameters  objectForKey:JSONKEY_TRANSACTION_ID]];
+                    }
+                }
+                [self.AllSendingData_Array addObject:_parameters];
             }
             
-            [AllSendingData_Array addObject:_parameters];
-            
-            [_parameters release];
-        }
-        
-       //*************************
-       //  Send data to server
-        //*************************
+            //*************************
+            //  Send data to server
+            //*************************
             
             //Server Connection
-            ServerConnection *_ServerConnection=[[ServerConnection alloc] init];
+            ServerConnection *_ServerConnection=[[[ServerConnection alloc] init] autorelease];
             _ServerConnection.logic_view=self;
-            [_ServerConnection WebApi_ConnectionObject:AllSendingData_Array customerId:self.customer_id];
-            [_ServerConnection release];
+            [_ServerConnection WebApi_ConnectionObject:self.AllSendingData_Array customerId:self.customer_id];
             
-        //NSLog(@"All Data: %@",AllSendingData_Array);
+            //NSLog(@"All Data: %@",AllSendingData_Array);
         }
-        [AllData release];
     }
 }
 

@@ -12,11 +12,8 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
 #import <Foundation/Foundation.h>
 #import "JSON.h"
 
-@interface ServerConnection : NSObject{
-    SBJsonWriter *jsonWriter; //For Json writer
-    NSMutableData *Server_ReceiveData;
-    id logic_view;
-}
+@interface ServerConnection : NSObject
+
 @property(nonatomic,assign)id logic_view;
 
 #pragma mark -  NSURLConnection (Connect to server)

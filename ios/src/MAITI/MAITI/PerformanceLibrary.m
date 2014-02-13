@@ -119,7 +119,8 @@ MAITI is licensed under the terms and conditions of the MIT License as set forth
     
     [PL_Logic SetNotificationTransaction:parameters   error:&error];
     
-    NSLog(@"error %@", error.localizedDescription);
+    if (error)
+        NSLog(@"error %@", error.localizedDescription);
     
     [parameters release];
 }
