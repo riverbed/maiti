@@ -61,7 +61,6 @@ public class UserExperience
 	private MaitiTransaction staticTransactionData;
 	private Vector<MaitiTransaction> unfinishedTransactions;
 	
-	private long lngBufferDurationLeft = 5000;
 
 	//private CountDownTimer cdt_AppPerfBuffer;
 

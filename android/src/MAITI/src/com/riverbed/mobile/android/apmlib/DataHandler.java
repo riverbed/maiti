@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import com.riverbed.mobile.android.apmlib.objects.SettingsObject;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -221,7 +220,7 @@ class DataHandler extends Handler {
             /*Checking response */
             if(response!=null)
             {
-                HttpEntity respEntity = response.getEntity();
+                response.getEntity();
                // if(respEntity != null)
                //     strResp = EntityUtils.toString(respEntity);
                 Log.d(this.getClass().getSimpleName(), "MAITI json Post: "+jsonArrayPosting.toString());

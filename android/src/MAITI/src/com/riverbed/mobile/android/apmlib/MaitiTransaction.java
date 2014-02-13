@@ -53,7 +53,6 @@ class MaitiTransaction
 	//private long intervalTransactionStart;
 	//private long notificationStart;
     private long timestampStartTime;
-	private long timestampEndTime;
 	private Vector<MaitiEvent> vec_AppEventDO;
 
 	private long intervalDuration = 0;
