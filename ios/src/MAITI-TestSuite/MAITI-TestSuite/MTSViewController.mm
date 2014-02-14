@@ -9,12 +9,18 @@
 #import "MTSAppDelegate.h"
 #import "MTSViewController.h"
 
+#include <string>
+#include <sstream>
+
 @interface MTSViewController ()
 {
     long notificationId_;
     long eventCounter_;
     long errorCounter_;
     long userDataCounter_;
+    long tag1Counter_;
+    long tag2Counter_;
+    long tag3Counter_;
 }
 
 @property (retain, nonatomic) NSString* simpleTransactionId;
@@ -41,6 +47,9 @@
 -(IBAction)didMessageChildTap:(id)sender;
 -(IBAction)didUserDataTap:(id)sender;
 -(IBAction)didChildDataTap:(id)sender;
+-(IBAction)didTag1Tap:(id)sender;
+-(IBAction)didTag2Tap:(id)sender;
+-(IBAction)didTag3Tap:(id)sender;
 
 @end
 
@@ -67,6 +76,9 @@
     eventCounter_ = 0;
     errorCounter_ = 0;
     userDataCounter_ = 0;
+    tag1Counter_ = 0;
+    tag2Counter_ = 0;
+    tag3Counter_ = 0;
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -129,36 +141,51 @@
 
 -(void)didExtraTap:(id)sender
 {
-    [appd().performanceLibrary SetTransactionEvent:@"ExtraEvent" transactionId:self.mainTransactionId];
-    [appd().performanceLibrary SetUserTag3:[[NSNumber numberWithLong:eventCounter_++] stringValue] transactionId:self.mainTransactionId];
+    [appd().performanceLibrary SetTransactionEvent:[NSString stringWithFormat:@"ExtraEvent_%ld",eventCounter_++] transactionId:self.mainTransactionId];
 }
 
 -(void)didExtraChidTap:(id)sender
 {
-    [appd().performanceLibrary SetTransactionEvent:@"ExtraEvent" transactionId:self.childTransactionId];
-    [appd().performanceLibrary SetUserTag3:[[NSNumber numberWithLong:eventCounter_++] stringValue] transactionId:self.childTransactionId];
+    [appd().performanceLibrary SetTransactionEvent:[NSString stringWithFormat:@"ExtraEvent_%ld",eventCounter_++] transactionId:self.childTransactionId];
 }
 
 -(void)didMessageTap:(id)sender
 {
-    [appd().performanceLibrary SetErrorMessage:@"ErrorMessage" transactionId:self.mainTransactionId];
-    [appd().performanceLibrary SetUserTag2:[[NSNumber numberWithLong:errorCounter_++] stringValue] transactionId:self.mainTransactionId];
+    [appd().performanceLibrary SetErrorMessage:[NSString stringWithFormat:@"ErrorMessage_%ld",errorCounter_++] transactionId:self.mainTransactionId];
 }
 
 -(void)didMessageChildTap:(id)sender
 {
-    [appd().performanceLibrary SetErrorMessage:@"ErrorMessage" transactionId:self.childTransactionId];
-    [appd().performanceLibrary SetUserTag2:[[NSNumber numberWithLong:errorCounter_++] stringValue] transactionId:self.childTransactionId];
+    [appd().performanceLibrary SetErrorMessage:[NSString stringWithFormat:@"ErrorMessage_%ld",errorCounter_++] transactionId:self.childTransactionId];
 }
 
 -(void)didUserDataTap:(id)sender
 {
-    [appd().performanceLibrary SetUserData:[[NSNumber numberWithLong:userDataCounter_++] stringValue] transactionId:self.mainTransactionId];
+    std::ostringstream os;
+    os << userDataCounter_++ << " " << std::string(15996,'E');
+    [appd().performanceLibrary SetUserData:@(os.str().c_str()) transactionId:self.mainTransactionId];
 }
 
 -(void)didChildDataTap:(id)sender
 {
-    [appd().performanceLibrary SetUserData:[[NSNumber numberWithLong:userDataCounter_++] stringValue] transactionId:self.childTransactionId];
+    std::ostringstream os;
+    os << userDataCounter_++ << " " << std::string(15996,'C');
+    [appd().performanceLibrary SetUserData:@(os.str().c_str()) transactionId:self.childTransactionId];
+}
+
+-(void)didTag1Tap:(id)sender
+{
+    [appd().performanceLibrary SetUserTag1:[NSString stringWithFormat:@"Tag1: %lu",tag1Counter_++] transactionId:self.mainTransactionId];
+}
+
+-(void)didTag2Tap:(id)sender
+{
+    [appd().performanceLibrary SetUserTag2:[NSString stringWithFormat:@"Tag2: %lu",tag2Counter_++] transactionId:self.mainTransactionId];
+}
+
+-(void)didTag3Tap:(id)sender
+{
+    [appd().performanceLibrary SetUserTag3:[NSString stringWithFormat:@"Tag3: %lu",tag3Counter_++] transactionId:self.mainTransactionId];
 }
 
 @end
