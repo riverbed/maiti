@@ -12,6 +12,9 @@
 @interface MTSViewController ()
 {
     long notificationId_;
+    long eventCounter_;
+    long errorCounter_;
+    long userDataCounter_;
 }
 
 @property (retain, nonatomic) NSString* simpleTransactionId;
@@ -32,6 +35,12 @@
 -(IBAction)didStopTransactionTap:(id)sender;
 -(IBAction)didMaitiChange:(id)sender;
 -(IBAction)didNotificationTap:(id)sender;
+-(IBAction)didExtraTap:(id)sender;
+-(IBAction)didExtraChidTap:(id)sender;
+-(IBAction)didMessageTap:(id)sender;
+-(IBAction)didMessageChildTap:(id)sender;
+-(IBAction)didUserDataTap:(id)sender;
+-(IBAction)didChildDataTap:(id)sender;
 
 @end
 
@@ -55,6 +64,9 @@
 {
     [super viewDidLoad];
     notificationId_ = 0;
+    eventCounter_ = 0;
+    errorCounter_ = 0;
+    userDataCounter_ = 0;
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -115,7 +127,38 @@
     [appd().performanceLibrary Notification:@"JustNotification" userTag1:[[NSNumber numberWithLong:notificationId_++] stringValue]];
 }
 
+-(void)didExtraTap:(id)sender
+{
+    [appd().performanceLibrary SetTransactionEvent:@"ExtraEvent" transactionId:self.mainTransactionId];
+    [appd().performanceLibrary SetUserTag3:[[NSNumber numberWithLong:eventCounter_++] stringValue] transactionId:self.mainTransactionId];
+}
 
+-(void)didExtraChidTap:(id)sender
+{
+    [appd().performanceLibrary SetTransactionEvent:@"ExtraEvent" transactionId:self.childTransactionId];
+    [appd().performanceLibrary SetUserTag3:[[NSNumber numberWithLong:eventCounter_++] stringValue] transactionId:self.childTransactionId];
+}
 
+-(void)didMessageTap:(id)sender
+{
+    [appd().performanceLibrary SetErrorMessage:@"ErrorMessage" transactionId:self.mainTransactionId];
+    [appd().performanceLibrary SetUserTag2:[[NSNumber numberWithLong:errorCounter_++] stringValue] transactionId:self.mainTransactionId];
+}
+
+-(void)didMessageChildTap:(id)sender
+{
+    [appd().performanceLibrary SetErrorMessage:@"ErrorMessage" transactionId:self.childTransactionId];
+    [appd().performanceLibrary SetUserTag2:[[NSNumber numberWithLong:errorCounter_++] stringValue] transactionId:self.childTransactionId];
+}
+
+-(void)didUserDataTap:(id)sender
+{
+    [appd().performanceLibrary SetUserData:[[NSNumber numberWithLong:userDataCounter_++] stringValue] transactionId:self.mainTransactionId];
+}
+
+-(void)didChildDataTap:(id)sender
+{
+    [appd().performanceLibrary SetUserData:[[NSNumber numberWithLong:userDataCounter_++] stringValue] transactionId:self.childTransactionId];
+}
 
 @end
