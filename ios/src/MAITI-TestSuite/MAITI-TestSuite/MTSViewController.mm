@@ -98,7 +98,7 @@
 
 -(void)updateChildNum
 {
-    self.childCounter.text = [NSString stringWithFormat:@"%d child transaction(s)",[self.childStack count]];
+    self.childCounter.text = [NSString stringWithFormat:@"%lu child transaction(s)",(unsigned long)[self.childStack count]];
 }
 
 -(void)didEndSimpleTransaction
@@ -123,10 +123,13 @@
 
 -(void)didStartChildTransactionTap:(id)sender
 {
+    NSString* trnid = nil;
     if (![self.childStack count])
-        [self.childStack addObject:[appd().performanceLibrary TransactionStart:@"ChildTransaction from root" parentTransactionId:self.mainTransactionId]];
+        trnid = [appd().performanceLibrary TransactionStart:@"ChildTransaction from root" parentTransactionId:self.mainTransactionId];
     else
-        [self.childStack addObject:[appd().performanceLibrary TransactionStart:[NSString stringWithFormat:@"ChildTransaction from child %d",[self.childStack count]+1] parentTransactionId:[self.childStack lastObject]]];
+        trnid = [appd().performanceLibrary TransactionStart:[NSString stringWithFormat:@"ChildTransaction from child %lu",[self.childStack count]+1l] parentTransactionId:[self.childStack lastObject]];
+    if (!trnid) return;
+    [self.childStack addObject:trnid];
     [self updateChildNum];
 }
 
