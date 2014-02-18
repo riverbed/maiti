@@ -42,7 +42,7 @@
                                     <action selector="didStartChildTransactionTap:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="QGZ-18-1tR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Bso-hj-FXJ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Bso-hj-FXJ">
                                 <rect key="frame" x="38" y="245" width="244" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Stop Child Transaction">
@@ -176,11 +176,31 @@
                                     <action selector="didTag3Tap:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="CRX-s9-2lS"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="pFX-YL-fdm">
+                                <rect key="frame" x="23" y="516" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Crash!!!">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didCrashTap:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Hub-bB-0RH"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XK5-iK-kDX">
+                                <rect key="frame" x="23" y="473" width="277" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="MAITISwitch" destination="Tep-cd-n7l" id="rwq-aw-yaQ"/>
+                        <outlet property="childCounter" destination="XK5-iK-kDX" id="ZbD-s8-ksS"/>
                         <outlet property="simpleTransactionButton" destination="SNO-vA-hfd" id="cCb-UL-cy9"/>
                         <outlet property="startChidTransactionButton" destination="Ydx-VZ-wck" id="VC6-R5-k4m"/>
                         <outlet property="startTransactionButton" destination="GG7-0J-eFo" id="g5s-cG-D5k"/>

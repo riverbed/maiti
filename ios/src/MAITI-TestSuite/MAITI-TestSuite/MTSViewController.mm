@@ -11,6 +11,7 @@
 
 #include <string>
 #include <sstream>
+#include <exception>
 
 @interface MTSViewController ()
 {
@@ -25,7 +26,7 @@
 
 @property (retain, nonatomic) NSString* simpleTransactionId;
 @property (retain, nonatomic) NSString* mainTransactionId;
-@property (retain, nonatomic) NSString* childTransactionId;
+@property (retain, nonatomic) NSMutableArray* childStack;
 
 @property (retain, nonatomic) IBOutlet UIButton *simpleTransactionButton;
 @property (retain, nonatomic) IBOutlet UIButton *startTransactionButton;
@@ -33,6 +34,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *stopChildTransactionButton;
 @property (retain, nonatomic) IBOutlet UIButton *stopTransactionButton;
 @property (retain, nonatomic) IBOutlet UISwitch *MAITISwitch;
+@property (retain, nonatomic) IBOutlet UILabel *childCounter;
 
 -(IBAction)didSimpleTransactionTap:(id)sender;
 -(IBAction)didStartTransactionTap:(id)sender;
@@ -50,6 +52,9 @@
 -(IBAction)didTag1Tap:(id)sender;
 -(IBAction)didTag2Tap:(id)sender;
 -(IBAction)didTag3Tap:(id)sender;
+-(IBAction)didCrashTap:(id)sender;
+
+-(void)updateChildNum;
 
 @end
 
@@ -64,8 +69,9 @@
     self.startChidTransactionButton = nil;
     self.stopChildTransactionButton = nil;
     self.stopTransactionButton = nil;
-    self.childTransactionId = nil;
     self.MAITISwitch = nil;
+    self.childStack = nil;
+    self.childCounter = nil;
     [super dealloc];
 }
 
@@ -79,6 +85,8 @@
     tag1Counter_ = 0;
     tag2Counter_ = 0;
     tag3Counter_ = 0;
+    self.childStack = [NSMutableArray array];
+    [self updateChildNum];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -86,6 +94,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)updateChildNum
+{
+    self.childCounter.text = [NSString stringWithFormat:@"%d child transaction(s)",[self.childStack count]];
 }
 
 -(void)didEndSimpleTransaction
@@ -110,16 +123,19 @@
 
 -(void)didStartChildTransactionTap:(id)sender
 {
-    self.startChidTransactionButton.enabled = NO;
-    self.stopChildTransactionButton.enabled = YES;
-    self.childTransactionId = [appd().performanceLibrary TransactionStart:@"ChildTransaction" parentTransactionId:self.mainTransactionId];
+    if (![self.childStack count])
+        [self.childStack addObject:[appd().performanceLibrary TransactionStart:@"ChildTransaction from root" parentTransactionId:self.mainTransactionId]];
+    else
+        [self.childStack addObject:[appd().performanceLibrary TransactionStart:[NSString stringWithFormat:@"ChildTransaction from child %d",[self.childStack count]+1] parentTransactionId:[self.childStack lastObject]]];
+    [self updateChildNum];
 }
 
 -(void)didStopChildTransaction:(id)sender
 {
-    self.startChidTransactionButton.enabled = YES;
-    self.stopChildTransactionButton.enabled = NO;
-    [appd().performanceLibrary TransactionEnd:self.childTransactionId];
+    if (![self.childStack count]) return;
+    [appd().performanceLibrary TransactionEnd:[self.childStack lastObject]];
+    [self.childStack removeLastObject];
+    [self updateChildNum];
 }
 
 -(void)didStopTransactionTap:(id)sender
@@ -146,7 +162,8 @@
 
 -(void)didExtraChidTap:(id)sender
 {
-    [appd().performanceLibrary SetTransactionEvent:[NSString stringWithFormat:@"ExtraEvent_%ld",eventCounter_++] transactionId:self.childTransactionId];
+    if (![self.childStack count]) return;
+    [appd().performanceLibrary SetTransactionEvent:[NSString stringWithFormat:@"ExtraEvent_%ld",eventCounter_++] transactionId:[self.childStack lastObject]];
 }
 
 -(void)didMessageTap:(id)sender
@@ -156,7 +173,8 @@
 
 -(void)didMessageChildTap:(id)sender
 {
-    [appd().performanceLibrary SetErrorMessage:[NSString stringWithFormat:@"ErrorMessage_%ld",errorCounter_++] transactionId:self.childTransactionId];
+    if (![self.childStack count]) return;
+    [appd().performanceLibrary SetErrorMessage:[NSString stringWithFormat:@"ErrorMessage_%ld",errorCounter_++] transactionId:[self.childStack lastObject]];
 }
 
 -(void)didUserDataTap:(id)sender
@@ -168,9 +186,10 @@
 
 -(void)didChildDataTap:(id)sender
 {
+    if (![self.childStack count]) return;
     std::ostringstream os;
     os << userDataCounter_++ << " " << std::string(15996,'C');
-    [appd().performanceLibrary SetUserData:@(os.str().c_str()) transactionId:self.childTransactionId];
+    [appd().performanceLibrary SetUserData:@(os.str().c_str()) transactionId:[self.childStack lastObject]];
 }
 
 -(void)didTag1Tap:(id)sender
@@ -186,6 +205,11 @@
 -(void)didTag3Tap:(id)sender
 {
     [appd().performanceLibrary SetUserTag3:[NSString stringWithFormat:@"Tag3: %lu",tag3Counter_++] transactionId:self.mainTransactionId];
+}
+
+-(void)didCrashTap:(id)sender
+{
+    std::terminate();
 }
 
 @end
