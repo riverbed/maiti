@@ -1,0 +1,143 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/enable_lib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On/Off Library"
+            android:checked="true" />
+
+        <CheckBox
+            android:id="@+id/recordConnectionInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record Connection Info"
+            android:checked="true" />
+        <CheckBox
+            android:id="@+id/recordMemory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record Memory"
+            android:checked="true" />
+        <CheckBox
+            android:id="@+id/recordSerial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record Serial"
+            android:checked="true" />
+
+        <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Send Simple Transaction"-->
+            <!--android:onClick="onSendSimpleTransaction" />-->
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Notification"
+            android:onClick="onSendNotification" />
+
+        <Button
+            android:id="@+id/emulate_crash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Emulate Crash"
+            android:onClick="onCrash" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start New Transaction"
+            android:onClick="onStartTransaction" />
+
+        <Button
+            android:id="@+id/end_transaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="End Current Transaction"
+            android:onClick="onEndTransaction"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/end_root_transaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="End Root Transaction"
+            android:onClick="onEndRootTransaction"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/add_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Event To Current Transaction"
+            android:onClick="onAddEventToTransaction"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/add_event_to_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Event To Root Transaction"
+            android:onClick="onAddEventToRootTransaction"
+            android:enabled="false" />
+
+
+        <Button
+            android:id="@+id/add_tag1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Tag1 To Transaction"
+            android:onClick="onAddTag1ToTransaction"
+            android:enabled="false" />
+
+
+        <Button
+            android:id="@+id/add_tag2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Tag2 To Transaction"
+            android:onClick="onAddTag2ToTransaction"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/add_tag3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Tag3 To Transaction"
+            android:onClick="onAddTag3ToTransaction"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/add_user_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add UserData To Transaction"
+            android:onClick="onAddUserDataToTransaction"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/add_error_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Error Message To Transaction"
+            android:onClick="onAddErrorMessageToTransaction"
+            android:enabled="false" />
+    </LinearLayout>
+</ScrollView>
