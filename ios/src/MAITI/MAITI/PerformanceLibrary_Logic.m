@@ -77,6 +77,7 @@ enum errorcode
     InvalidNameParameters=101,
     TooLongUserTag=102,
     TooLongUserData=103,
+    InvalidParentTransaction=104
 };
 
 -(id)initWithCustomerId:(NSString*) customerId appId:(NSString*) appId {
@@ -168,13 +169,13 @@ enum errorcode
     //check error
     if (parameters == NULL)
     {
-        *error = [[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:NullParameters userInfo:[self returnErrorDescription:NullParameters]];
+        *error = [[[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:NullParameters userInfo:[self returnErrorDescription:NullParameters]] autorelease];
         return nil;
     }
     else
     if ([_parameters objectForKey:JSONKEY_TRANSACTION_NAME] == NULL)
     {
-        *error = [[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:InvalidNameParameters userInfo:[self returnErrorDescription:InvalidNameParameters]];
+        *error = [[[NSError alloc] initWithDomain:@"ParametersErrorDomain" code:InvalidNameParameters userInfo:[self returnErrorDescription:InvalidNameParameters]] autorelease];
         return nil;
     }
     else
@@ -196,6 +197,13 @@ enum errorcode
                 events=[[[NSMutableDictionary alloc] init] autorelease];
                 [events setObject:[NSNumber numberWithInt:duration] forKey:PARENT_OFFSET_KEY];
             }
+            else
+            {
+                *error = [[[NSError alloc] initWithDomain:@"ParametersErrorDomain"
+                                                    code:InvalidParentTransaction
+                                                userInfo:[self returnErrorDescription:InvalidParentTransaction]] autorelease];
+                return nil;
+            }
         }
         @synchronized(self.event_transaction)
         {
@@ -216,13 +224,16 @@ enum errorcode
     [_parameters setObject:self.package_id forKey:JSONKEY_PACKAGE_ID];
     [_parameters setObject:self.app_code_ver forKey:JSONKEY_CODE_VER];
         
-    if ([[self.Preferences objectForKey:PREF_RECORD_SERIAL] integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_SERIAL] integerValue] == 1)
+    {
          [_parameters setObject:[self DeviceUDID] forKey:JSONKEY_HW_SERIAL_NUMBER];
     }
-    if ([[self.Preferences objectForKey:PREF_RECORD_CONN]  integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_CONN]  integerValue] == 1)
+    {
          [_parameters setObject:[self CurrentNetwork] forKey:JSONKEY_CONNECTION_TYPE];
     }
-    if ([[self.Preferences objectForKey:PREF_RECORD_MEM] integerValue] == 1) {
+    if ([[self.Preferences objectForKey:PREF_RECORD_MEM] integerValue] == 1)
+    {
         long mem_free = [self iPhoneFreeMemory];
         long mem_total = [self iPhoneTotalMemory];
         [_parameters setObject:[NSNumber numberWithUnsignedLong: mem_free] forKey:JSONKEY_MEM_FREE];
@@ -681,6 +692,9 @@ enum errorcode
             break;
         case TooLongUserData:
             errorDictionary = @{ NSLocalizedDescriptionKey : @"user data parameter value is invalid or too long."};
+            break;
+        case InvalidParentTransaction:
+            errorDictionary = @{ NSLocalizedDescriptionKey : @"invalid parent transaction"};
             break;
         default:
             break;
