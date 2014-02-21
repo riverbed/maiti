@@ -104,7 +104,7 @@ class DataHandler extends Handler {
             activePoster = null;
 
             // Kick off a new thread to wrap up and post the data
-            Thread t = new Thread("PosterThread"){
+            Thread t = new Thread(){
                 public void run()
                 {
 
