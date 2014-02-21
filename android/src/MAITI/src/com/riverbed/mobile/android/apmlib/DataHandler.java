@@ -1,7 +1,6 @@
 package com.riverbed.mobile.android.apmlib;
 
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import com.riverbed.mobile.android.apmlib.objects.SettingsObject;
 import org.apache.http.HttpResponse;
@@ -105,10 +104,9 @@ class DataHandler extends Handler {
             activePoster = null;
 
             // Kick off a new thread to wrap up and post the data
-            Thread t = new Thread(){
+            Thread t = new Thread("PosterThread"){
                 public void run()
                 {
-                    Looper.prepare(); //For Preparing Message Pool for the child Thread
 
                     // Synchronized
                     JSONArray data = getPostBuffer();
@@ -116,7 +114,6 @@ class DataHandler extends Handler {
                     // Not synchronized (can upload batches async)
                     sendJson(data);
 
-                    Looper.loop(); //Loop in the message queue
                 }
             };
 
