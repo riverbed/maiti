@@ -173,6 +173,11 @@ public class UserExperience
 	 */
 	private String detect_Net_Conn_Type()
 	{
+		if (mConnectivity == null)
+		{
+			return "unknown";
+		}
+		
 		// Skip if no connection, or background data disabled
 		NetworkInfo info = mConnectivity.getActiveNetworkInfo();
 		if (info == null || !mConnectivity.getBackgroundDataSetting()) 
