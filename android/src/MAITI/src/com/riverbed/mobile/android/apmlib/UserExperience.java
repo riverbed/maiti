@@ -173,7 +173,7 @@ public class UserExperience
 	 */
 	private String detect_Net_Conn_Type()
 	{
-		if (mConnectivity == null)
+		if (mConnectivity == null || mTelephony == null)
 		{
 			return "unknown";
 		}
